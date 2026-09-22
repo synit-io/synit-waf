@@ -18,7 +18,9 @@ permissions:
   contents: read
 
 env:
-  GO_VERSION: "1.27.0"
+  # Minor version only: setup-go with check-latest resolves it to the newest
+  # 1.27.x patch release, so CI always tests with the current toolchain.
+  GO_VERSION: "1.27"
   # Versioned, immutable image tags live on Docker Hub. GHCR carries only the
   # "latest" tag of the newest stable release and is pruned after each release.
   DOCKERHUB_NAMESPACE: synitio
@@ -102,6 +104,7 @@ jobs:
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: ${{ env.GO_VERSION }}
+          check-latest: true
           cache: true
       - name: Verify modules
         run: |
@@ -271,6 +274,7 @@ jobs:
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: ${{ env.GO_VERSION }}
+          check-latest: true
           cache: true
 
       - name: Build

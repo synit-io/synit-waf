@@ -6,11 +6,11 @@ For runtime setup and policy details, see the [onboarding guide](./onboarding.md
 
 ## Prerequisites
 
-- Go 1.27.0 or newer; all three modules declare `go 1.27.0`
+- Go 1.27.0 or newer; all three modules declare `go 1.27.0`. CI and the container images use the newest 1.27.x patch release.
 - Git
 - Docker with the Compose plugin for the container image and the Docker end-to-end test
 - `curl` for manual HTTP checks
-- `golangci-lint` v2 for `make lint` (CI uses v2.12.2)
+- `golangci-lint` v2 for `make lint`. CI uses v2.13.2 compiled with the CI Go toolchain (`install-mode: goinstall`), because prebuilt golangci-lint binaries refuse a `go.mod` that targets a newer Go than they were built with. Locally, install it the same way: `go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2`.
 - `python3` for `make check-links`
 - optional: `actionlint`, `kubeconform`, and `shellcheck` to run the asset checks that CI runs
 

@@ -11,13 +11,13 @@ require (
 	github.com/graphql-go/graphql v0.8.1
 	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/libdns/cloudflare v0.2.2
-	github.com/oschwald/geoip2-golang/v2 v2.3.0
+	github.com/oschwald/geoip2-golang/v2 v2.4.0
 	github.com/prometheus/client_golang v1.24.1
-	github.com/prometheus/client_model v0.6.2
-	github.com/sirupsen/logrus v1.10.1
+	github.com/prometheus/client_model v0.6.3
+	github.com/sirupsen/logrus v1.10.2
 	github.com/tidwall/gjson v1.19.0
-	golang.org/x/crypto v0.56.0
-	golang.org/x/time v0.15.0
+	golang.org/x/crypto v0.57.0
+	golang.org/x/time v0.16.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -69,7 +69,7 @@ require (
 	github.com/miekg/dns v1.1.73 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/oklog/ulid/v2 v2.1.2 // indirect
-	github.com/oschwald/maxminddb-golang/v2 v2.5.0 // indirect
+	github.com/oschwald/maxminddb-golang/v2 v2.6.0 // indirect
 	github.com/petar-dambovaliev/aho-corasick v0.0.0-20250424160509-463d218d4745 // indirect
 	github.com/power-devops/perfstat v0.0.0-20260805114148-88456608a4f6 // indirect
 	github.com/prometheus/common v0.70.1 // indirect
@@ -87,9 +87,9 @@ require (
 	go.uber.org/zap/exp v0.3.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/net v0.58.0 // indirect
-	golang.org/x/sync v0.22.0 // indirect
-	golang.org/x/sys v0.47.0 // indirect
-	golang.org/x/text v0.41.0 // indirect
+	golang.org/x/sync v0.23.0 // indirect
+	golang.org/x/sys v0.48.0 // indirect
+	golang.org/x/text v0.42.0 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	rsc.io/binaryregexp v0.2.0 // indirect

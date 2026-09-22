@@ -1,0 +1,7 @@
+.git
+.DS_Store
+README.md
+*.out
+*.test
+synit-llm-guard
+*_test.go

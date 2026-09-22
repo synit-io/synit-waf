@@ -1,0 +1,65 @@
+name: Bug report
+description: A reproducible defect in the WAF, a companion service, a template, or the documentation.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not report a security vulnerability here. Use the private advisory form linked in SECURITY.md.
+        Remove credentials, tokens, customer data, and other secrets from everything you paste.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `synit-waf -version`, the image tag and digest, or the commit.
+      placeholder: "Synit WAF v1.0.0 / synitio/synit-waf:1.0.0@sha256:..."
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - WAF (synit-waf)
+        - AI logs receiver
+        - LLM guard
+        - Deployment template (deploy/, assets/examples/cluster/)
+        - Documentation
+        - Build, CI, or release
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you observe, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Commands or requests that trigger the problem, in order.
+      placeholder: |
+        1. Start the WAF with the configuration below.
+        2. curl -i -H 'Host: app.example.com' 'http://127.0.0.1:8080/?q=...'
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: The relevant part of `config.yml` (and tenant shards) with secrets removed. It is rendered as YAML.
+      render: yaml
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and output
+      description: Application log lines, `-validate-config` output, or the `/readyz` report. Rendered as text.
+      render: text
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS or platform, container runtime or orchestrator, Go version when building from source, proxies or load balancers in front of the WAF.

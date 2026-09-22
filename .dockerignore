@@ -1,0 +1,46 @@
+# The root Dockerfile needs only go.mod, go.sum, cmd/, internal/, assets/rules/,
+# third_party/, LICENSE, and NOTICE. Everything else stays out of the context.
+.git
+.github
+.gitignore
+.dockerignore
+.golangci.yml
+.DS_Store
+.idea/
+.vscode/
+
+# Documentation, templates, and tests
+*.md
+docs/
+deploy/
+services/
+tools/
+test/
+scripts/
+assets/config.sample.yml
+assets/examples/
+assets/openapi.yaml
+Makefile
+AGENTS.md
+RELEASE_AUDIT.md
+
+# Local build and test outputs
+bin/
+dist/
+*.out
+*.test
+coverage*
+synit-waf
+synit-waf-*
+synit-waf_amd64
+synit-waf_arm64
+
+# Secrets and local data
+.env*
+*.pem
+*.key
+*.mmdb
+secrets/
+services/ai-logs-receiver/logs/
+test/e2e/docker-test-data/
+*.log

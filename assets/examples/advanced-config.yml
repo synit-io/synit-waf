@@ -1,0 +1,155 @@
+# --- Advanced configuration ---
+# Trusted proxy chain, file logging, GeoIP, CrowdSec, JWT, GraphQL limits,
+# response masking, and a wildcard tenant.
+#
+# No OWASP Core Rule Set is bundled. paranoia_level sets the CRS paranoia
+# variables and only has an effect when you add CRS rule files under rules_dir.
+# Rule IDs 440000-440099 are reserved for Synit WAF built-ins.
+#
+# -validate-config accepts this file as is. Starting the WAF with it also needs
+# a reachable CrowdSec LAPI with a real bouncer key and a MaxMind Country
+# database at geoip.db_path.
+
+global_settings:
+  log_level: "DEBUG"
+  allow_insecure_service_urls: true # CrowdSec is reached over a private network
+  request_body_limit: 2097152
+  rules_dir: "/etc/waf/rules"
+  read_timeout: "20s"
+  write_timeout: "0s"
+  idle_timeout: "120s"
+  admin_address: "127.0.0.1:9090"
+  upstream_transport:
+    max_idle_conns_per_host: 128
+    max_conns_per_host: 0 # unlimited
+  global_rate_limit:
+    requests_per_minute: 5000
+    burst: 1000
+  # Accept X-Forwarded-For, X-Forwarded-Host and X-Forwarded-Proto only from
+  # these peers. Values sent by any other peer are dropped.
+  trust_forwarded_for: true
+  trusted_proxy_cidrs: ["10.0.0.0/8"]
+  # Optional cluster-wide per-tenant rate-limit coordination
+  coordinator:
+    enabled: false # Set WAF_COORDINATOR_SECRET(_FILE) and valid TLS paths before enabling
+    role: "leader"
+    address: ":8089"
+    secret: ""
+    tls:
+      ca_file: "/etc/waf/coordinator/ca.pem"
+      cert_file: "/etc/waf/coordinator/server.pem"
+      key_file: "/etc/waf/coordinator/server-key.pem"
+  ip_sets:
+    allow_list: ["10.0.0.0/8"]
+    block_list: ["203.0.113.7/32"]
+  acme:
+    enabled: false # Before enabling: set agree_tos and WAF_GLOBAL_ACME_DNS_TOKEN(_FILE)
+    agree_tos: false # true accepts the certificate authority's subscriber agreement
+    email: "ops@example.com"
+    storage_path: "/etc/waf/certs/acme"
+    staging: false
+    dns_provider: "cloudflare" # required for the wildcard tenant below
+    dns_token: ""
+
+logging:
+  access_log:
+    enabled: true
+    path: "/var/log/waf/access-%yyyy-%MM-%dd.log" # a new file is opened when the date changes
+    format: "json"
+  error_log:
+    enabled: true
+    path: "/var/log/waf/error.log"
+    format: "text"
+
+crowdsec:
+  api_url: "http://crowdsec:8080/"
+  api_key: "YOUR_CROWDSEC_BOUNCER_KEY" # prefer WAF_CROWDSEC_KEY or WAF_CROWDSEC_KEY_FILE
+  cache_ttl: "30s"
+
+geoip:
+  db_path: "/etc/waf/geoip/GeoLite2-Country.mmdb"
+
+waf_rule_sets:
+  "optimized-protection": |
+    SecRule REQUEST_METHOD "@rx (?i:^(trace|track)$)" "id:130001,phase:1,deny,status:403,log,msg:'Blocked unsafe HTTP method'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\\bunion\\b.{0,20}\\bselect\\b|\\bor\\b\\s+1=1|\\bdrop\\b\\s+table\\b|\\bwaitfor\\s+delay\\b))" "id:130002,phase:2,deny,status:403,log,msg:'Blocked SQL injection pattern'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\.\./|%2e%2e%2f|%2e%2e/|/etc/passwd|/proc/self/environ))" "id:130003,phase:2,deny,status:403,log,msg:'Blocked traversal pattern'"
+    SecRule REQUEST_HEADERS:User-Agent "@rx (?i:(sqlmap|nikto|acunetix|nessus|masscan|nmap|zgrab|nuclei))" "id:130004,phase:1,deny,status:403,log,msg:'Blocked scanner user-agent'"
+    SecRule REQUEST_URI "@rx (?i:(\\.env|\\.git/|composer\\.json|package-lock\\.json|backup\\.zip|dump\\.sql))" "id:130005,phase:2,deny,status:403,log,msg:'Blocked sensitive artifact access'"
+
+tenants:
+  "app.example.com":
+    upstreams:
+      - url: "http://my-secure-app:80"
+    upstreamInsecure: false
+    health_check:
+      interval: "10s"
+      timeout: "3s"
+      path: "/healthz" # HTTP GET; a status below 500 is healthy
+    header_transform:
+      inject_request:
+        X-Synit-Tenant: "{{TENANT}}"
+      strip_response:
+        - "Server"
+        - "X-Powered-By"
+    security:
+      waf_enabled: true
+      audit_mode: false
+      circuit_breaker:
+        enabled: true
+        threshold: 5
+        cooldown: "30s"
+        failure_status_codes: [502, 503, 504]
+      # Masking buffers the response. Responses that are compressed, partial
+      # (206) or text/event-stream are answered with 502 instead.
+      response_masking:
+        - pattern: '(?i)(visa|mastercard).*\b(?:\d[ -]*?){13,16}\b'
+          replacement: "[MASKED_CARD]"
+      block_page_url: "https://help.example.com/security-check"
+      dev_bypass_secret: "" # Development only; at least 32 characters
+      # Tokens must carry exp. Accepted algorithms: RS*, PS*, ES* and EdDSA.
+      # jwt_validation cannot be combined with basic_auth on the same tenant.
+      jwt_validation:
+        enabled: true
+        jwks_endpoint: "https://auth.example.com/.well-known/jwks.json"
+        issuer: "https://auth.example.com/"
+        audience: "app.example.com"
+      graphql:
+        enabled: true
+        paths: ["/graphql"] # only these paths are treated as GraphQL endpoints
+        block_introspection: true
+        max_query_depth: 5
+        max_batched_queries: 10
+        max_query_bytes: 102400
+      paranoia_level: 3
+      crowdsec_enabled: true
+      geoip_enabled: true
+      blocked_countries: ["RU", "CN", "KP", "IR"]
+      include_rule_sets:
+        - "optimized-protection"
+      custom_rules: |
+        SecRule REQUEST_HEADERS:X-Legacy-API "@rx .+" "id:230001,phase:1,deny,status:400,log,msg:'Blocked legacy API header'"
+
+  "admin.example.com":
+    upstreams:
+      - url: "http://my-admin-panel:80"
+    security:
+      waf_enabled: true
+      paranoia_level: 2
+      crowdsec_enabled: true
+      include_rule_sets:
+        - "optimized-protection"
+      # Add only operator-generated bcrypt hashes; no reusable sample credential is bundled.
+      basic_auth: []
+
+  # A wildcard matches any depth: a.customers.example.com and
+  # a.b.customers.example.com are both served by this tenant.
+  "*.customers.example.com":
+    upstreams:
+      - url: "http://customer-platform-ingress:80"
+    security:
+      waf_enabled: true
+      paranoia_level: 2
+      crowdsec_enabled: true
+      include_rule_sets:
+        - "optimized-protection"

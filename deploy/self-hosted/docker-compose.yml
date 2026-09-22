@@ -1,0 +1,78 @@
+# Self-hosted Synit WAF with WAF-managed ACME certificates and a CrowdSec LAPI.
+#
+# Expected layout next to this file:
+#   config/config.yml      main configuration (mounted read-only)
+#   config/tenants.d/      optional tenant shards (mounted read-only)
+#   certs/                 writable ACME storage (storage_path: /etc/waf/certs/acme)
+#   geoip/                 GeoLite2-Country.mmdb when a tenant enables GeoIP
+#   secrets/crowdsec-key   CrowdSec bouncer key, read through WAF_CROWDSEC_KEY_FILE
+#   crowdsec/              CrowdSec configuration and data
+#
+# ACME needs global_settings.acme.agree_tos: true and acme.email in config.yml
+# (or WAF_GLOBAL_ACME_AGREE_TOS=true and WAF_GLOBAL_ACME_EMAIL below).
+services:
+  synit-waf:
+    # Versioned images are published on Docker Hub only. Pin the digest of the
+    # release you deploy: synitio/synit-waf:1.0.0@sha256:<digest>
+    image: synitio/synit-waf:1.0.0
+    ports:
+      - "80:80"
+      - "443:443"
+      # The admin listener has no authentication: loopback only.
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./config/config.yml:/etc/waf/config.yml:ro
+      - ./config/tenants.d:/etc/waf/tenants.d:ro
+      - ./certs:/etc/waf/certs:rw
+      - ./geoip:/etc/waf/geoip:ro
+    secrets:
+      - crowdsec-key
+    environment:
+      WAF_GLOBAL_LOG_LEVEL: "INFO"
+      WAF_GLOBAL_ADMIN_ADDRESS: "0.0.0.0:9090"
+      WAF_GLOBAL_ACME_ENABLED: "true"
+      WAF_GLOBAL_ACME_AGREE_TOS: "true"
+      WAF_GLOBAL_ACME_EMAIL: "admin@example.com"
+      WAF_GLOBAL_ACME_STORAGE_PATH: "/etc/waf/certs/acme"
+      WAF_GLOBAL_TRUST_FORWARDED_FOR: "false"
+      # CrowdSec runs on the private Compose network without TLS.
+      WAF_GLOBAL_ALLOW_INSECURE_SERVICE_URLS: "true"
+      WAF_CROWDSEC_URL: "http://crowdsec:8080/"
+      WAF_CROWDSEC_KEY_FILE: "/run/secrets/crowdsec-key"
+      # Coordinator for clustered deployments (needs TLS files and
+      # WAF_COORDINATOR_SECRET_FILE before enabling)
+      WAF_COORDINATOR_ENABLED: "false"
+      WAF_COORDINATOR_ROLE: "leader"
+      WAF_COORDINATOR_ADDRESS: ":8089"
+    read_only: true
+    # Coraza checks at startup that it can create a temporary file; a
+    # read-only root filesystem therefore needs a writable /tmp.
+    tmpfs:
+      - /tmp
+    cap_drop: ["ALL"]
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      crowdsec:
+        condition: service_healthy
+    restart: unless-stopped
+    # The image has no shell or HTTP client, so a container healthcheck is not
+    # possible. Probe http://127.0.0.1:9090/readyz from the host or monitoring.
+
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest@sha256:2f527c9bb8b367120eb08b82890aa912ce96bfa1ada93dda0721700e4b4e0dde
+    environment:
+      COLLECTIONS: "crowdsecurity/linux crowdsecurity/http-cve"
+    volumes:
+      - ./crowdsec/config:/etc/crowdsec
+      - ./crowdsec/data:/var/lib/crowdsec/data
+    healthcheck:
+      test: ["CMD", "cscli", "version"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+secrets:
+  crowdsec-key:
+    file: ./secrets/crowdsec-key

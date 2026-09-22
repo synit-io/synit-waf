@@ -1,0 +1,82 @@
+# 1-to-N Synit WAF cluster example (Docker Swarm).
+# Scale with: docker service scale synit-waf-cluster_synit-waf=<N>
+# Deploy with: docker stack deploy -c assets/examples/cluster/swarm-stack.yml synit-waf-cluster
+
+services:
+  synit-waf:
+    # Versioned images are published on Docker Hub. Pin the digest in production:
+    # synitio/synit-waf:1.0.0@sha256:<digest of the release image>
+    image: synitio/synit-waf:1.0.0
+    environment:
+      EDGE_WAF_CONFIG: /etc/waf/config.yml
+      WAF_GLOBAL_ADMIN_ADDRESS: 0.0.0.0:9090
+      WAF_GLOBAL_TRUST_FORWARDED_FOR: "false"
+      # Secrets come from Swarm secrets through the *_FILE variables, e.g.:
+      # WAF_CROWDSEC_KEY_FILE: /run/secrets/crowdsec-key
+    # secrets:
+    #   - crowdsec-key
+    read_only: true
+    # Coraza checks at startup that it can create a temporary file; a
+    # read-only root filesystem therefore needs a writable /tmp.
+    tmpfs:
+      - /tmp
+    cap_drop: ["ALL"]
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    volumes:
+      - /etc/waf/config.yml:/etc/waf/config.yml:ro
+      - /etc/waf/rules:/etc/waf/rules:ro
+      - /etc/waf/geoip:/etc/waf/geoip:ro
+      - /etc/waf/certs:/etc/waf/certs:ro
+    networks:
+      - edge
+      - upstream
+      - operations
+    deploy:
+      replicas: 3 # set to 1..N based on traffic profile
+      endpoint_mode: vip
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1024M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+  # Example upstream service. Replace with your own backend ingress/service.
+  upstream-app:
+    image: hashicorp/http-echo:1.0.0@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186
+    command: ["-listen=:5678", "-text=ok"]
+    networks:
+      - upstream
+    deploy:
+      replicas: 2
+
+networks:
+  edge:
+    driver: overlay
+    attachable: true
+  upstream:
+    driver: overlay
+    attachable: true
+  operations:
+    driver: overlay
+    attachable: true
+    internal: true
+
+# Create the secret once (docker secret create crowdsec-key ./crowdsec-key)
+# and uncomment here and in the service above.
+# secrets:
+#   crowdsec-key:
+#     external: true

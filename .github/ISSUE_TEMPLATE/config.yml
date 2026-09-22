@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/synit-io/synit-waf/security/advisories/new
+    about: Report suspected vulnerabilities privately through GitHub's advisory form, never in a public issue. See SECURITY.md.
+  - name: Discord community
+    url: https://www.synit.io/discord
+    about: Questions, configuration help, and discussion with maintainers and other operators.
+  - name: Documentation
+    url: https://github.com/synit-io/synit-waf/blob/main/docs/README.md
+    about: Configuration reference, onboarding, deployment models, and developer guide.

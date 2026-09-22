@@ -1,0 +1,141 @@
+# Synit WAF on Kubernetes: three replicas behind a LoadBalancer Service.
+#
+# Before applying:
+#   - create the ConfigMap synit-waf-config with a valid config.yml
+#   - provide the PVCs waf-tenants-pvc (tenants.d shards) and waf-geoip-pvc
+#     (GeoLite2-Country.mmdb, only needed when a tenant enables GeoIP)
+#   - pin the image digest (see the image field)
+#   - restrict access to the admin port 9090 with a NetworkPolicy
+#
+# config.yml is mounted with subPath, which Kubernetes does not update in
+# place: roll the Deployment after changing the ConfigMap. Shards on the PVC
+# are watched and reloaded without a restart.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synit-waf
+  labels:
+    app: synit-waf
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: synit-waf
+  template:
+    metadata:
+      labels:
+        app: synit-waf
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: waf
+        # Versioned images are published on Docker Hub only. Pin the digest of
+        # the release you deploy: synitio/synit-waf:1.0.0@sha256:<digest>
+        image: synitio/synit-waf:1.0.0
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
+        env:
+        - name: EDGE_WAF_ADDR
+          value: "0.0.0.0:8080"
+        - name: WAF_GLOBAL_LOG_LEVEL
+          value: "INFO"
+        - name: WAF_GLOBAL_ADMIN_ADDRESS
+          value: "0.0.0.0:9090"
+        - name: WAF_GLOBAL_TRUST_FORWARDED_FOR
+          value: "false"
+        # Secrets are read from files, so they never appear in the pod spec.
+        # Uncomment and mount the Secret below when a tenant enables CrowdSec.
+        # - name: WAF_CROWDSEC_KEY_FILE
+        #   value: /etc/waf/secrets/crowdsec-key
+        volumeMounts:
+        - name: config-shards
+          mountPath: /etc/waf/tenants.d
+          readOnly: true
+        - name: base-config
+          mountPath: /etc/waf/config.yml
+          subPath: config.yml
+          readOnly: true
+        - name: geoip-database
+          mountPath: /etc/waf/geoip
+          readOnly: true
+        # Coraza checks at startup that it can create a temporary file; the
+        # read-only root filesystem therefore needs a writable /tmp.
+        - name: tmp
+          mountPath: /tmp
+        # - name: waf-secrets
+        #   mountPath: /etc/waf/secrets
+        #   readOnly: true
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: admin
+        # All probes target the admin listener. /livez and /healthz on the
+        # public port answer only for a Host that is not a tenant.
+        startupProbe:
+          httpGet:
+            path: /livez
+            port: admin
+          failureThreshold: 30
+          periodSeconds: 2
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: admin
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: admin
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: "250m"
+            memory: 256Mi
+          limits:
+            cpu: "1"
+            memory: 1Gi
+      volumes:
+      - name: config-shards
+        persistentVolumeClaim:
+          claimName: waf-tenants-pvc
+      - name: base-config
+        configMap:
+          name: synit-waf-config
+      - name: geoip-database
+        persistentVolumeClaim:
+          claimName: waf-geoip-pvc
+      - name: tmp
+        emptyDir:
+          sizeLimit: 64Mi
+      # - name: waf-secrets
+      #   secret:
+      #     secretName: synit-waf-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: synit-waf
+  labels:
+    app: synit-waf
+spec:
+  type: LoadBalancer
+  # Local keeps the client source address visible to the WAF. Confirm the
+  # behaviour of your load balancer; if it adds forwarded headers instead,
+  # configure trust_forwarded_for with its exact CIDRs.
+  externalTrafficPolicy: Local
+  ports:
+  - port: 80
+    targetPort: http
+    name: http
+  selector:
+    app: synit-waf

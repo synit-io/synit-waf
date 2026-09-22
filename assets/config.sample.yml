@@ -1,0 +1,181 @@
+# Synit WAF sample configuration.
+# Every key is shown with its default or a typical value. Validate a copy with:
+#   synit-waf -config ./config.yml -validate-config
+
+# Global settings for the WAF process
+global_settings:
+  log_level: "INFO" # trace, debug, info, warn, error, fatal
+  request_body_limit: 1048576 # bytes of request body read for inspection; larger bodies get 413
+  response_masking_limit: 1048576 # max response body inspected when masking is configured
+  request_body_oversize_action: "reject" # the only supported value
+  security_dependency_failure_mode: "fail_open" # fail_open | fail_closed
+  allow_insecure_service_urls: false # true permits plain HTTP to JWKS, CrowdSec, log receiver, LLM guard
+  rules_dir: "/etc/waf/rules" # root for rule files referenced by Coraza Include directives
+  read_timeout: "15s"
+  write_timeout: "0s" # keep zero for WebSocket/SSE; do not enable response masking for SSE
+  idle_timeout: "60s"
+  admin_address: "127.0.0.1:9090" # /livez, /readyz and /metrics; keep private
+
+  # Connection pool of each upstream transport
+  upstream_transport:
+    max_idle_conns_per_host: 64
+    max_conns_per_host: 0 # 0 = unlimited
+
+  # Global protection for the WAF process itself
+  global_rate_limit:
+    requests_per_minute: 2000
+    burst: 500
+
+  # Respect X-Forwarded-For if behind a trusted proxy/CDN
+  trust_forwarded_for: false
+  trusted_proxy_cidrs: []
+
+  # Optional cluster-wide per-tenant rate-limit coordination
+  coordinator:
+    enabled: false
+    role: "leader"
+    address: ":8089"
+    secret: "" # Inject WAF_COORDINATOR_SECRET or WAF_COORDINATOR_SECRET_FILE before enabling
+    tls:
+      ca_file: "/etc/waf/coordinator/ca.pem"
+      cert_file: "/etc/waf/coordinator/server.pem"
+      key_file: "/etc/waf/coordinator/server-key.pem"
+      server_name: "waf-coordinator.internal"
+
+  # Fast global IP allow/block checks before tenant/WAF logic
+  ip_sets:
+    allow_list: []
+    block_list: []
+
+  # Automated TLS through ACME (Let's Encrypt)
+  acme:
+    enabled: false
+    agree_tos: false # must be true when enabled: accepts the CA subscriber agreement
+    email: "admin@example.com"
+    storage_path: "/etc/waf/certs/acme"
+    staging: true
+    dns_provider: "" # Set to cloudflare for DNS-01
+    dns_token: "" # Use WAF_GLOBAL_ACME_DNS_TOKEN or WAF_GLOBAL_ACME_DNS_TOKEN_FILE
+
+# Logging configuration
+logging:
+  access_log:
+    enabled: true
+    path: "/var/log/waf/access-%yyyy-%MM-%dd.log" # date placeholders rotate the file at runtime
+    format: "json"
+  error_log:
+    enabled: false
+    path: "/var/log/waf/error-%yyyy-%MM-%dd.log"
+    format: "json"
+  log_forwarder:
+    enabled: false
+    url: "http://ai-logs-receiver:8082/logs"
+    token: "" # Use WAF_LOG_FORWARDER_TOKEN or WAF_LOG_FORWARDER_TOKEN_FILE; the receiver requires >= 32 characters
+
+# CrowdSec LAPI configuration
+crowdsec:
+  api_url: "http://crowdsec:8080/"
+  api_key: "" # Use WAF_CROWDSEC_KEY or WAF_CROWDSEC_KEY_FILE
+  cache_ttl: "30s" # per client IP decision cache; "0s" queries LAPI for every request
+
+# GeoIP database configuration
+geoip:
+  db_path: "/etc/waf/geoip/GeoLite2-Country.mmdb"
+
+# Reusable rule profiles.
+# No OWASP Core Rule Set is bundled. Rule IDs 440000-440099 are reserved for
+# Synit WAF built-ins; do not use them in your own rules.
+waf_rule_sets:
+  "base-protection": |
+    SecRule REQUEST_METHOD "@rx (?i:^(trace|track)$)" "id:110001,phase:1,deny,status:403,log,msg:'Blocked unsafe HTTP method'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\\bunion\\b.{0,20}\\bselect\\b|\\bor\\b\\s+1=1|\\bdrop\\b\\s+table\\b))" "id:110002,phase:2,deny,status:403,log,msg:'Blocked SQL injection pattern'"
+  # "llm-protection" is a built-in rule set (IDs 440010-440013) that matches
+  # instruction-override and prompt-extraction phrases. It is generated per
+  # tenant and scoped to llm_protection.inspect_paths. A tenant uses it only
+  # when it lists "llm-protection" in include_rule_sets.
+
+# Per-FQDN tenant configurations
+tenants:
+  "api.example.com":
+    upstreams:
+      - url: "http://my-api-service:8080"
+        response_header_timeout: "30s"
+    upstreamInsecure: false
+    # Active upstream health check. An empty path selects a TCP connect check;
+    # otherwise an HTTP GET is sent and any status below 500 counts as healthy.
+    health_check:
+      interval: "10s"
+      timeout: "5s"
+      path: ""
+    header_transform:
+      inject_request:
+        X-WAF-Tenant: "{{TENANT}}"
+        X-Client-IP: "{{CLIENT_IP}}"
+      strip_request: []
+      inject_response:
+        X-Content-Type-Options: "nosniff"
+      strip_response:
+        - "Server"
+    security:
+      waf_enabled: true
+      audit_mode: false # If true, matched rules are logged and counted but never block
+      paranoia_level: 1 # 1-4; sets the CRS paranoia variables, effective only with operator-supplied CRS
+      crowdsec_enabled: false
+      geoip_enabled: false
+      blocked_countries: []
+      block_page_url: ""
+      block_page_path: "" # local HTML file such as assets/examples/block-page.html; must exist, it is read at load and reload
+      dev_bypass_secret: "" # Development only; at least 32 characters; keep real secrets outside version control
+      # Optional passive health probing
+      circuit_breaker:
+        enabled: true
+        threshold: 5
+        cooldown: "30s"
+        failure_status_codes: [502, 503, 504]
+      # Optional edge authentication. jwt_validation and basic_auth cannot be
+      # combined on one tenant because both read the Authorization header.
+      jwt_validation:
+        enabled: false
+        jwks_endpoint: "https://auth.example.com/.well-known/jwks.json"
+        issuer: "https://auth.example.com/"
+        audience: "api.example.com"
+      basic_auth: []
+      rate_limit:
+        requests_per_minute: 0
+        burst: 0
+      # Optional GraphQL protection
+      graphql:
+        enabled: false
+        paths: ["/graphql"] # prefix match on a path boundary; other paths are not inspected
+        block_introspection: true
+        max_query_depth: 5
+        max_batched_queries: 10
+        max_query_bytes: 102400
+      # Optional LLM protection
+      llm_protection:
+        enabled: false
+        mode: "hybrid"        # rules | ml | hybrid
+        action: "audit"       # deny | audit
+        threshold: 0.85
+        fail_mode: "open"     # open | closed
+        timeout: "500ms"      # one deadline for all sidecar batches of a request
+        max_body_bytes: 0     # whole request body; 0 uses global_settings.request_body_limit
+        max_text_bytes: 8192  # per extracted text; longer texts are scored in overlapping chunks
+        sidecar_max_batch: 32 # texts per sidecar call; must not exceed the guard's MAX_TEXTS
+        sidecar_url: "http://localhost:5001/v1/detect"
+        sidecar_token_env: "WAF_LLM_SIDECAR_TOKEN" # <NAME>_FILE is read when <NAME> is unset
+        inspect_paths:
+          - "/v1/chat/completions"
+          - "/v1/messages"
+        inspect_json_fields:
+          - "prompt"
+          - "input"
+          - "query"
+          - "messages[].content"
+      include_rule_sets:
+        - "base-protection"
+      custom_rules: ""
+      # Optional sensitive data scrubbing
+      response_masking:
+        - pattern: '(?i)(visa|mastercard).*\b(?:\d[ -]*?){13,16}\b'
+          replacement: "[MASKED_CARD]"

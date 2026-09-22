@@ -1,0 +1,17 @@
+services:
+  synit-waf:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    volumes:
+      - ./docker-test-data/config.yml:/etc/waf/config.yml:ro
+    environment:
+      - EDGE_WAF_ADDR=0.0.0.0:80
+      - WAF_GLOBAL_ADMIN_ADDRESS=0.0.0.0:9090
+    ports:
+      # Loopback only: the admin listener has no authentication.
+      - "127.0.0.1:8080:80"
+      - "127.0.0.1:9090:9090"
+  upstream:
+    image: hashicorp/http-echo@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186
+    command: -text="upstream-ok"

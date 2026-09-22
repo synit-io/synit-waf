@@ -1,0 +1,115 @@
+# Dependabot keeps Go modules, container base images, image references in
+# Compose and Kubernetes files, and GitHub Actions current. Actions referenced
+# by tag (the CodeQL actions) are pinned to a commit SHA by the first update.
+version: 2
+updates:
+  # Go modules: the WAF and both services. tools/thirdparty is part of the
+  # root module and has no go.mod of its own.
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "go"]
+    groups:
+      go-dependencies:
+        patterns: ["*"]
+
+  - package-ecosystem: "gomod"
+    directory: "/services/ai-logs-receiver"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "go"]
+    groups:
+      go-dependencies:
+        patterns: ["*"]
+
+  - package-ecosystem: "gomod"
+    directory: "/services/synit-llm-guard"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "go"]
+    groups:
+      go-dependencies:
+        patterns: ["*"]
+
+  # Dockerfiles (digest-pinned base images).
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "docker"]
+
+  - package-ecosystem: "docker"
+    directory: "/services/ai-logs-receiver"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "docker"]
+
+  - package-ecosystem: "docker"
+    directory: "/services/synit-llm-guard"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "docker"]
+
+  # Image references in the Kubernetes manifests.
+  - package-ecosystem: "docker"
+    directory: "/deploy/kubernetes"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "docker"]
+
+  # Image references in the Compose files and the Swarm stack.
+  - package-ecosystem: "docker-compose"
+    directory: "/deploy/self-hosted"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "docker"]
+
+  - package-ecosystem: "docker-compose"
+    directory: "/deploy/log-receiver"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "docker"]
+
+  - package-ecosystem: "docker-compose"
+    directory: "/assets/examples/cluster"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "docker"]
+
+  - package-ecosystem: "docker-compose"
+    directory: "/test/e2e"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "docker"]
+
+  # Workflow actions, pinned to commit SHAs.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    labels: ["dependencies", "github-actions"]

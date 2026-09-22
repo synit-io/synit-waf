@@ -1,0 +1,64 @@
+# --- Intermediate configuration ---
+# Several tenants, CrowdSec decisions, and a second rule set.
+# No OWASP Core Rule Set is bundled; paranoia_level only has an effect when you
+# add CRS yourself. Rule IDs 440000-440099 are reserved for Synit WAF built-ins.
+
+global_settings:
+  log_level: "INFO"
+  allow_insecure_service_urls: true # CrowdSec uses a private Compose network
+  request_body_limit: 1048576
+  read_timeout: "15s"
+  write_timeout: "0s"
+  idle_timeout: "60s"
+  admin_address: "127.0.0.1:9090"
+
+crowdsec:
+  api_url: "http://crowdsec:8080/"
+  api_key: "YOUR_CROWDSEC_BOUNCER_KEY" # prefer WAF_CROWDSEC_KEY or WAF_CROWDSEC_KEY_FILE
+  cache_ttl: "30s" # LAPI decisions are cached per client IP; "0s" disables the cache
+
+waf_rule_sets:
+  "base-protection": |
+    SecRule REQUEST_METHOD "@rx (?i:^(trace|track)$)" "id:110001,phase:1,deny,status:403,log,msg:'Blocked unsafe HTTP method'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\\bunion\\b.{0,20}\\bselect\\b|\\bor\\b\\s+1=1|\\bdrop\\b\\s+table\\b))" "id:110002,phase:2,deny,status:403,log,msg:'Blocked SQL injection pattern'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\.\./|%2e%2e%2f|%2e%2e/|/etc/passwd))" "id:110003,phase:2,deny,status:403,log,msg:'Blocked traversal pattern'"
+  "advanced-protection": |
+    SecRule REQUEST_METHOD "@rx (?i:^(trace|track)$)" "id:120001,phase:1,deny,status:403,log,msg:'Blocked unsafe HTTP method'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\\bunion\\b.{0,20}\\bselect\\b|\\bor\\b\\s+1=1|\\bdrop\\b\\s+table\\b))" "id:120002,phase:2,deny,status:403,log,msg:'Blocked SQL injection pattern'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\.\./|%2e%2e%2f|%2e%2e/|/etc/passwd))" "id:120003,phase:2,deny,status:403,log,msg:'Blocked traversal pattern'"
+    SecRule REQUEST_HEADERS:User-Agent "@rx (?i:(sqlmap|nikto|acunetix|nessus|masscan|nmap))" "id:120004,phase:1,deny,status:403,log,msg:'Blocked scanner user-agent'"
+
+tenants:
+  "api.example.com":
+    upstreams:
+      - url: "http://my-api-service:3000"
+    # HTTP health check: any status below 500 is healthy. Without a path the
+    # check is a TCP connect.
+    health_check:
+      interval: "10s"
+      timeout: "5s"
+      path: "/healthz"
+    security:
+      waf_enabled: true
+      paranoia_level: 2
+      crowdsec_enabled: true
+      include_rule_sets:
+        - "advanced-protection"
+
+  "www.example.com":
+    upstreams:
+      - url: "http://my-frontend-service:80"
+    security:
+      waf_enabled: true
+      paranoia_level: 1
+      crowdsec_enabled: true
+      include_rule_sets:
+        - "base-protection"
+      custom_rules: |
+        SecRule REQUEST_HEADERS:User-Agent "@contains BadBot/1.0" "id:220001,phase:1,deny,status:403,log,msg:'Blocked custom bad bot for marketing site'"
+
+  "staging.example.com":
+    upstreams:
+      - url: "http://my-staging-server:8080"
+    security:
+      waf_enabled: false # Proxy only; enable after selecting and testing a rule set.

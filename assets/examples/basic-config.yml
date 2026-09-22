@@ -1,0 +1,38 @@
+# --- Basic configuration ---
+# One tenant, audit-first rollout, no external security service.
+# No OWASP Core Rule Set is bundled; the rules below are small examples.
+
+global_settings:
+  log_level: "INFO"
+  request_body_limit: 1048576 # bytes of request body read for inspection
+  read_timeout: "15s"
+  write_timeout: "0s" # required for SSE; do not combine SSE with response masking
+  idle_timeout: "60s"
+  admin_address: "127.0.0.1:9090"
+  # Global protection for the WAF process itself
+  global_rate_limit:
+    requests_per_minute: 2000
+    burst: 500
+  # Respect X-Forwarded-For if behind a trusted proxy/CDN
+  trust_forwarded_for: false
+  trusted_proxy_cidrs: []
+
+# The container image also ships example profiles under /etc/waf/rules/profiles/.
+# Rule IDs 440000-440099 are reserved for Synit WAF built-ins.
+waf_rule_sets:
+  "base-protection": |
+    SecRule REQUEST_METHOD "@rx (?i:^(trace|track)$)" "id:110001,phase:1,deny,status:403,log,msg:'Blocked unsafe HTTP method'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\\bunion\\b.{0,20}\\bselect\\b|\\bor\\b\\s+1=1|\\bdrop\\b\\s+table\\b))" "id:110002,phase:2,deny,status:403,log,msg:'Blocked SQL injection pattern'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\.\./|%2e%2e%2f|%2e%2e/|/etc/passwd))" "id:110003,phase:2,deny,status:403,log,msg:'Blocked traversal pattern'"
+
+tenants:
+  "www.example.com":
+    upstreams:
+      - url: "http://10.0.0.5:8080"
+    security:
+      waf_enabled: true
+      # Audit mode logs and counts matched rules without blocking. Recommended for new tenants.
+      audit_mode: true
+      paranoia_level: 1
+      include_rule_sets:
+        - "base-protection"

@@ -1,0 +1,34 @@
+# Build outputs
+/bin/
+/dist/
+*.out
+*.test
+coverage*
+
+# Local binaries
+/synit-waf
+/synit-waf-*
+/synit-waf_amd64
+/synit-waf_arm64
+/services/ai-logs-receiver/ai-logs-receiver
+/services/synit-llm-guard/synit-llm-guard
+
+# Local data and test artifacts
+/services/ai-logs-receiver/logs/
+/test/e2e/docker-test-data/
+*.log
+
+# Secrets and operator-supplied files: never commit these
+.env*
+*.pem
+*.key
+*.mmdb
+secrets/
+
+# Internal working notes
+RELEASE_AUDIT.md
+
+# IDE/OS
+.idea/
+.vscode/
+.DS_Store

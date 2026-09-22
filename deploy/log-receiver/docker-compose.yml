@@ -1,0 +1,43 @@
+# AI Logs Receiver: the optional sink for the WAF's logging.log_forwarder.
+#
+# Required environment (for example in a .env file next to this file; keep
+# that file out of version control):
+#   AI_LOG_TOKENS  JSON object mapping tenant IDs to bearer tokens of at least
+#                  32 characters, for example
+#                  {"tenant-a":"<openssl rand -hex 32>"}
+#
+# The WAF sends its token as logging.log_forwarder.token, preferably through
+# WAF_LOG_FORWARDER_TOKEN or WAF_LOG_FORWARDER_TOKEN_FILE, and needs
+# global_settings.allow_insecure_service_urls: true to use the plain
+# http://ai-logs-receiver:8082/logs URL on a private network.
+services:
+  ai-logs-receiver:
+    # Versioned images are published on Docker Hub only. Pin the digest of the
+    # release you deploy: synitio/ai-logs-receiver:1.0.0@sha256:<digest>
+    # To run the current source instead:
+    #   docker build -t ai-logs-receiver:local ../../services/ai-logs-receiver
+    image: synitio/ai-logs-receiver:1.0.0
+    ports:
+      - "${AI_LOGS_RECEIVER_PORT:-8082}:8082"
+    environment:
+      PORT: "8082"
+      AI_LOG_TOKENS: "${AI_LOG_TOKENS:?set AI_LOG_TOKENS to a JSON tenant-to-token map with tokens of at least 32 characters}"
+      LOGS_DIR: "/data/ai-logs"
+      MAX_REQUEST_BYTES: "${AI_LOG_MAX_REQUEST_BYTES:-10485760}"
+      MAX_TENANT_BYTES: "${AI_LOG_MAX_TENANT_BYTES:-1073741824}"
+      REQUESTS_PER_MINUTE: "${AI_LOG_REQUESTS_PER_MINUTE:-600}"
+      RETENTION: "${AI_LOG_RETENTION:-720h}"
+    volumes:
+      # The named volume is created with the image's directory ownership
+      # (UID 65532). A bind mount must be writable by that user.
+      - ai-logs-data:/data/ai-logs
+    read_only: true
+    cap_drop: ["ALL"]
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    # The image has no shell or HTTP client, so a container healthcheck is not
+    # possible. Probe /readyz from the host or monitoring.
+
+volumes:
+  ai-logs-data:

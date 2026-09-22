@@ -1,0 +1,199 @@
+# Synit WAF with the LLM guard sidecar on Kubernetes.
+#
+# Before applying:
+#   - create the ConfigMap synit-waf-config with a valid config.yml whose
+#     ml/hybrid tenants use
+#       sidecar_url: "http://127.0.0.1:5001/v1/detect"
+#       sidecar_token_env: "WAF_LLM_SIDECAR_TOKEN"
+#   - create the Secret llm-guard with the key auth-token (at least 32
+#     random characters); both containers read it
+#   - provide the PVCs waf-tenants-pvc, waf-geoip-pvc, and llm-model-pvc
+#     (the exported ONNX model directory; no model is bundled)
+#   - pin the image digests (see the image fields)
+#   - restrict access to the admin port 9090 with a NetworkPolicy
+#
+# The guard shares the pod network, so the WAF reaches it over loopback and
+# allow_insecure_service_urls stays false.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synit-waf-llm
+  labels:
+    app: synit-waf-llm
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: synit-waf-llm
+  template:
+    metadata:
+      labels:
+        app: synit-waf-llm
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      # Main WAF container
+      - name: waf
+        # Versioned images are published on Docker Hub only. Pin the digest of
+        # the release you deploy: synitio/synit-waf:1.0.0@sha256:<digest>
+        image: synitio/synit-waf:1.0.0
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
+        env:
+        - name: EDGE_WAF_ADDR
+          value: "0.0.0.0:8080"
+        - name: WAF_GLOBAL_LOG_LEVEL
+          value: "INFO"
+        - name: WAF_GLOBAL_TRUST_FORWARDED_FOR
+          value: "false"
+        - name: WAF_GLOBAL_ADMIN_ADDRESS
+          value: "0.0.0.0:9090"
+        # Named by llm_protection.sidecar_token_env in config.yml.
+        - name: WAF_LLM_SIDECAR_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: llm-guard
+              key: auth-token
+        volumeMounts:
+        - name: config-shards
+          mountPath: /etc/waf/tenants.d
+          readOnly: true
+        - name: base-config
+          mountPath: /etc/waf/config.yml
+          subPath: config.yml
+          readOnly: true
+        - name: geoip-database
+          mountPath: /etc/waf/geoip
+          readOnly: true
+        # Coraza checks at startup that it can create a temporary file; the
+        # read-only root filesystem therefore needs a writable /tmp.
+        - name: tmp
+          mountPath: /tmp
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: admin
+        # All probes target the admin listener. /livez and /healthz on the
+        # public port answer only for a Host that is not a tenant.
+        startupProbe:
+          httpGet:
+            path: /livez
+            port: admin
+          failureThreshold: 30
+          periodSeconds: 2
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: admin
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: admin
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: "250m"
+            memory: 256Mi
+          limits:
+            cpu: "1"
+            memory: 1Gi
+
+      # LLM guard sidecar
+      - name: llm-guard
+        # Pin the digest: synitio/synit-llm-guard:1.0.0@sha256:<digest>
+        image: synitio/synit-llm-guard:1.0.0
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
+        env:
+        - name: PORT
+          value: "5001"
+        - name: MODEL_PATH
+          value: "/models/model"
+        - name: AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: llm-guard
+              key: auth-token
+        ports:
+        - containerPort: 5001
+          name: api
+        # The model loads before the listener starts; allow time for it.
+        startupProbe:
+          httpGet:
+            path: /livez
+            port: api
+          failureThreshold: 60
+          periodSeconds: 2
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: api
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: api
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: "500m"
+            memory: 512Mi
+          limits:
+            cpu: "2"
+            memory: 2Gi
+        volumeMounts:
+        - name: llm-model
+          mountPath: /models/model
+          readOnly: true
+        - name: tmp
+          mountPath: /tmp
+
+      volumes:
+      - name: config-shards
+        persistentVolumeClaim:
+          claimName: waf-tenants-pvc
+      - name: base-config
+        configMap:
+          name: synit-waf-config
+      - name: geoip-database
+        persistentVolumeClaim:
+          claimName: waf-geoip-pvc
+      - name: llm-model
+        persistentVolumeClaim:
+          claimName: llm-model-pvc
+      - name: tmp
+        emptyDir:
+          sizeLimit: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: synit-waf-llm
+  labels:
+    app: synit-waf-llm
+spec:
+  type: LoadBalancer
+  # Local keeps the client source address visible to the WAF. Confirm the
+  # behaviour of your load balancer; if it adds forwarded headers instead,
+  # configure trust_forwarded_for with its exact CIDRs.
+  externalTrafficPolicy: Local
+  ports:
+  - port: 80
+    targetPort: http
+    name: http
+  selector:
+    app: synit-waf-llm

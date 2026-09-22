@@ -1,0 +1,123 @@
+# --- Stricter rule sets and business rules ---
+# Reusable and tenant-specific rules, GeoIP, CrowdSec, file logging, and a
+# rules-only LLM tenant. Roll out with audit_mode: true first; matched rules
+# are then logged as "WAF rule matched" and counted without blocking.
+#
+# No OWASP Core Rule Set is bundled. paranoia_level only has an effect when you
+# add CRS rule files under rules_dir. Rule IDs 440000-440099 are reserved for
+# Synit WAF built-ins.
+#
+# -validate-config accepts this file as is. Starting the WAF with it also needs
+# a reachable CrowdSec LAPI with a real bouncer key and a MaxMind Country
+# database at geoip.db_path.
+
+global_settings:
+  log_level: "INFO"
+  allow_insecure_service_urls: true # CrowdSec uses a private service network
+  request_body_limit: 4194304
+  read_timeout: "20s"
+  write_timeout: "0s"
+  idle_timeout: "120s"
+  admin_address: "127.0.0.1:9090"
+
+logging:
+  access_log:
+    enabled: true
+    path: "/var/log/waf/access-%yyyy-%MM-%dd.log"
+    format: "json"
+  error_log:
+    enabled: true
+    path: "/var/log/waf/error-%yyyy-%MM-%dd.log"
+    format: "json"
+
+crowdsec:
+  api_url: "http://crowdsec:8080/"
+  api_key: "YOUR_CROWDSEC_BOUNCER_KEY" # prefer WAF_CROWDSEC_KEY or WAF_CROWDSEC_KEY_FILE
+  cache_ttl: "30s"
+
+geoip:
+  db_path: "/etc/waf/geoip/GeoLite2-Country.mmdb"
+
+waf_rule_sets:
+  "optimized-protection": |
+    SecRule REQUEST_METHOD "@rx (?i:^(trace|track)$)" "id:130001,phase:1,deny,status:403,log,msg:'Blocked unsafe HTTP method'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\\bunion\\b.{0,20}\\bselect\\b|\\bor\\b\\s+1=1|\\bdrop\\b\\s+table\\b|\\bwaitfor\\s+delay\\b))" "id:130002,phase:2,deny,status:403,log,msg:'Blocked SQL injection pattern'"
+    SecRule ARGS|REQUEST_URI "@rx (?i:(\.\./|%2e%2e%2f|%2e%2e/|/etc/passwd|/proc/self/environ))" "id:130003,phase:2,deny,status:403,log,msg:'Blocked traversal pattern'"
+    SecRule REQUEST_HEADERS:User-Agent "@rx (?i:(sqlmap|nikto|acunetix|nessus|masscan|nmap|zgrab|nuclei))" "id:130004,phase:1,deny,status:403,log,msg:'Blocked scanner user-agent'"
+    SecRule REQUEST_URI "@rx (?i:(\\.env|\\.git/|composer\\.json|package-lock\\.json|backup\\.zip|dump\\.sql))" "id:130005,phase:2,deny,status:403,log,msg:'Blocked sensitive artifact access'"
+    SecRule REQUEST_URI|ARGS "@rx (?i:(169\.254\.169\.254|metadata\.google\.internal))" "id:130006,phase:2,deny,status:403,log,msg:'Blocked metadata endpoint access pattern'"
+
+  "business-core": |
+    # Log requests to versioned API routes under /v{N}/ without blocking.
+    SecRule REQUEST_URI "@rx ^/v[0-9]+/" "id:240001,phase:1,pass,log,msg:'Versioned API route observed'"
+
+    # Block common secret/token parameter names leaking to public endpoints.
+    SecRule ARGS_NAMES "@rx (?i:(secret|token|api[_-]?key|private[_-]?key))" "id:240002,phase:2,deny,status:403,log,msg:'Sensitive argument name blocked'"
+
+tenants:
+  "api.prod.example.com":
+    upstreams:
+      - url: "http://api-service-a:8080"
+      - url: "http://api-service-b:8080"
+    health_check:
+      interval: "5s"
+      timeout: "2s"
+      path: "/healthz" # HTTP GET; a status below 500 is healthy
+    security:
+      waf_enabled: true
+      paranoia_level: 2
+      crowdsec_enabled: true
+      geoip_enabled: true
+      blocked_countries: ["RU", "CN", "KP", "IR"]
+      include_rule_sets:
+        - "optimized-protection"
+        - "business-core"
+      custom_rules: |
+        # Business-specific: block deprecated auth header and enforce migration.
+        SecRule REQUEST_HEADERS:X-Auth-Legacy "@rx .+" "id:240003,phase:1,deny,status:400,log,msg:'Deprecated auth header blocked'"
+
+  "admin.prod.example.com":
+    upstreams:
+      - url: "http://admin-service:8080"
+    security:
+      waf_enabled: true
+      paranoia_level: 3
+      crowdsec_enabled: true
+      geoip_enabled: true
+      blocked_countries: ["RU", "CN", "KP", "IR"]
+      include_rule_sets:
+        - "optimized-protection"
+      # Add only operator-generated bcrypt hashes; no reusable sample credential is bundled.
+      basic_auth: []
+
+  "*.customer.prod.example.com":
+    upstreams:
+      - url: "http://customer-ingress:80"
+    security:
+      waf_enabled: true
+      paranoia_level: 2
+      crowdsec_enabled: true
+      include_rule_sets:
+        - "optimized-protection"
+
+  # Static prompt-injection rules only; no classifier sidecar is needed.
+  # The built-in llm-protection rules (IDs 440010-440013) run only for
+  # requests under inspect_paths.
+  "ai.prod.example.com":
+    upstreams:
+      - url: "http://llm-gateway:8080"
+    security:
+      waf_enabled: true
+      audit_mode: true
+      paranoia_level: 1
+      include_rule_sets:
+        - "llm-protection"
+      llm_protection:
+        enabled: true
+        mode: "rules"
+        action: "audit"
+        inspect_paths:
+          - "/v1/chat/completions"
+        inspect_json_fields:
+          - "prompt"
+          - "messages[].content"

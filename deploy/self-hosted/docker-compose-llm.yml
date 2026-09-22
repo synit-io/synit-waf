@@ -1,0 +1,69 @@
+# Self-hosted Synit WAF with the LLM guard sidecar.
+#
+# Expected layout next to this file:
+#   config/config.yml      main configuration; ml/hybrid tenants use
+#                            sidecar_url: "http://synit-llm-guard:5001/v1/detect"
+#                            sidecar_token_env: "WAF_LLM_SIDECAR_TOKEN"
+#   config/tenants.d/      optional tenant shards
+#   certs/                 writable ACME storage, only used when ACME is enabled
+#   geoip/                 GeoLite2-Country.mmdb when a tenant enables GeoIP
+#
+# Required environment (for example in a .env file next to this file; keep
+# that file out of version control):
+#   LLM_GUARD_AUTH_TOKEN  bearer token shared by the WAF and the guard, at
+#                         least 32 random characters (openssl rand -hex 32)
+#   LLM_MODEL_DIR         absolute path of the exported ONNX model directory
+services:
+  synit-waf:
+    # Versioned images are published on Docker Hub only. Pin the digest of the
+    # release you deploy: synitio/synit-waf:1.0.0@sha256:<digest>
+    image: synitio/synit-waf:1.0.0
+    ports:
+      - "80:80"
+      # The admin listener has no authentication: loopback only.
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./config/config.yml:/etc/waf/config.yml:ro
+      - ./config/tenants.d:/etc/waf/tenants.d:ro
+      - ./certs:/etc/waf/certs:rw
+      - ./geoip:/etc/waf/geoip:ro
+    environment:
+      WAF_GLOBAL_LOG_LEVEL: "INFO"
+      WAF_GLOBAL_ADMIN_ADDRESS: "0.0.0.0:9090"
+      WAF_GLOBAL_TRUST_FORWARDED_FOR: "false"
+      # The guard is reached over the private Compose network without TLS.
+      WAF_GLOBAL_ALLOW_INSECURE_SERVICE_URLS: "true"
+      # Named by llm_protection.sidecar_token_env in config.yml. With a Docker
+      # or Swarm secret, set WAF_LLM_SIDECAR_TOKEN_FILE=/run/secrets/<name>
+      # instead.
+      WAF_LLM_SIDECAR_TOKEN: "${LLM_GUARD_AUTH_TOKEN:?set LLM_GUARD_AUTH_TOKEN to a token of at least 32 characters}"
+    read_only: true
+    # Coraza checks at startup that it can create a temporary file; a
+    # read-only root filesystem therefore needs a writable /tmp.
+    tmpfs:
+      - /tmp
+    cap_drop: ["ALL"]
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - synit-llm-guard
+    restart: unless-stopped
+
+  synit-llm-guard:
+    # Pin the digest: synitio/synit-llm-guard:1.0.0@sha256:<digest>
+    image: synitio/synit-llm-guard:1.0.0
+    expose:
+      - "5001"
+    environment:
+      PORT: "5001"
+      MODEL_PATH: "/models/model"
+      AUTH_TOKEN: "${LLM_GUARD_AUTH_TOKEN:?set LLM_GUARD_AUTH_TOKEN to a token of at least 32 characters}"
+    volumes:
+      - "${LLM_MODEL_DIR:?set LLM_MODEL_DIR to the exported ONNX model directory}:/models/model:ro"
+    read_only: true
+    cap_drop: ["ALL"]
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped

@@ -1,0 +1,44 @@
+name: Feature request
+description: Propose a new control, configuration option, or other improvement.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the existing issues and the configuration reference first; the option may already exist under another name.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to achieve, and what stops you today? Describe the traffic or threat, not only the missing option.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: How should it work? Include the configuration you would expect to write, if any.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Existing options, rules, or external components that could solve this, and why they are not sufficient.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - WAF (synit-waf)
+        - AI logs receiver
+        - LLM guard
+        - Deployment templates
+        - Documentation
+        - Build, CI, or release
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I am willing to implement this change under the project's contribution rules (DCO sign-off, Apache-2.0).

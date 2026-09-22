@@ -1,0 +1,4 @@
+# Code owners are requested for review on every pull request.
+# The team must exist in the synit-io organization with write access to this
+# repository; otherwise GitHub ignores the entry.
+* @synit-io/maintainers

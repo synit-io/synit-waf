@@ -1,0 +1,206 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+
+# One run per branch: a push to dev and the pull request opened from dev share
+# the group (keyed by the head branch), so the same commit is not built twice,
+# and a newer run cancels an older one for the same branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  GO_VERSION: "1.27.0"
+
+jobs:
+  lint-go:
+    name: Lint (Go)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - name: golangci-lint (root)
+        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        with:
+          version: v2.12.2
+          args: --timeout=5m
+      - name: golangci-lint (ai-logs-receiver)
+        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        with:
+          version: v2.12.2
+          working-directory: services/ai-logs-receiver
+          args: --timeout=5m
+      - name: golangci-lint (synit-llm-guard)
+        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        with:
+          version: v2.12.2
+          working-directory: services/synit-llm-guard
+          args: --timeout=5m
+
+  unit-test:
+    name: Unit Tests (Go)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - name: gofmt
+        run: |
+          gofmt_files=$(gofmt -l .)
+          test -z "$gofmt_files" || { echo "$gofmt_files"; exit 1; }
+      - name: go vet (all modules)
+        run: make vet
+      - name: Run root unit tests
+        run: go test -v -race ./cmd/... ./internal/...
+      - name: Run ai-logs-receiver unit tests
+        working-directory: services/ai-logs-receiver
+        run: go test -v -race ./...
+      - name: Run synit-llm-guard unit tests
+        working-directory: services/synit-llm-guard
+        run: go test -v -race ./...
+      - name: Verify modules and third-party notices
+        run: |
+          go mod verify
+          for module in services/ai-logs-receiver services/synit-llm-guard; do
+            (cd "$module" && go mod verify)
+          done
+          go run ./tools/thirdparty -check
+      - name: Scan for reachable Go vulnerabilities
+        run: |
+          go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...
+          for module in services/ai-logs-receiver services/synit-llm-guard; do
+            (cd "$module" && go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...)
+          done
+
+  validate-assets:
+    name: Validate Workflows and Deployment Assets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # Placeholders for `docker compose config`; the receiver and the guard
+      # require tokens of at least 32 characters.
+      AI_LOG_TOKENS: '{"tenant-a":"ci-placeholder-token-0123456789abcdef0123456789abcdef"}'
+      LLM_GUARD_AUTH_TOKEN: ci-placeholder-token-0123456789abcdef0123456789abcdef
+      LLM_MODEL_DIR: /tmp/model
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - name: Validate GitHub Actions
+        run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+      - name: Validate Kubernetes manifests
+        run: go run github.com/yannh/kubeconform/cmd/kubeconform@v0.8.0 -strict -summary deploy/kubernetes/*.yaml
+      - name: Validate shell scripts
+        run: shellcheck scripts/*.sh
+      - name: Validate sample and example configurations
+        run: make validate-examples
+      - name: Validate Compose files
+        run: |
+          docker compose -f deploy/log-receiver/docker-compose.yml config -q
+          docker compose -f deploy/self-hosted/docker-compose.yml config -q
+          docker compose -f deploy/self-hosted/docker-compose-llm.yml config -q
+          docker compose -f assets/examples/cluster/swarm-stack.yml config -q
+          docker compose -f test/e2e/docker-compose.yml config -q
+      - name: Validate OpenAPI document
+        run: |
+          python3 -c '
+          import yaml, sys
+          doc = yaml.safe_load(open("assets/openapi.yaml"))
+          assert doc["openapi"] == "3.0.3", doc["openapi"]
+          assert doc["paths"], "no paths"
+          print("openapi.yaml: %d paths" % len(doc["paths"]))
+          '
+      - name: Check Markdown links
+        run: make check-links
+
+  docker-build:
+    name: Build Container Images
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: synit-waf
+            context: .
+            file: ./Dockerfile
+          - image: ai-logs-receiver
+            context: ./services/ai-logs-receiver
+            file: ./services/ai-logs-receiver/Dockerfile
+          - image: synit-llm-guard
+            context: ./services/synit-llm-guard
+            file: ./services/synit-llm-guard/Dockerfile
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+      - name: Build image (no push)
+        env:
+          IMAGE: ${{ matrix.image }}
+          CONTEXT: ${{ matrix.context }}
+          DOCKERFILE: ${{ matrix.file }}
+        run: |
+          build_args=()
+          if [ "$IMAGE" = "synit-waf" ]; then
+            build_args+=(--build-arg "VERSION=ci-${GITHUB_SHA::12}")
+          fi
+          docker buildx build --load \
+            --file "$DOCKERFILE" \
+            --tag "$IMAGE:ci" \
+            "${build_args[@]}" \
+            "$CONTEXT"
+      - name: Smoke test the WAF image
+        if: matrix.image == 'synit-waf'
+        run: |
+          docker run --rm synit-waf:ci -version
+          docker run --rm --read-only --tmpfs /tmp --cap-drop ALL \
+            -v "$PWD/assets/examples/basic-config.yml:/etc/waf/config.yml:ro" \
+            synit-waf:ci -validate-config
+
+  e2e-host:
+    name: E2E (Host)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Run host e2e tests
+        run: ./scripts/run-e2e.sh
+
+  e2e-docker:
+    name: E2E (Docker)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+      - name: Run docker e2e tests
+        run: ./scripts/run-docker-e2e.sh

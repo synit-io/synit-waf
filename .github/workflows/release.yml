@@ -1,0 +1,382 @@
+name: Release & Publish
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to release, for example v1.0.0"
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  GO_VERSION: "1.27.0"
+  # Versioned, immutable image tags live on Docker Hub. GHCR carries only the
+  # "latest" tag of the newest stable release and is pruned after each release.
+  DOCKERHUB_NAMESPACE: synitio
+  GHCR_REGISTRY: ghcr.io
+
+jobs:
+  verify:
+    name: Verify Release Source
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      version: ${{ steps.release.outputs.version }}
+      prerelease: ${{ steps.release.outputs.prerelease }}
+      commit: ${{ steps.source.outputs.commit }}
+      image_tags: ${{ steps.floating.outputs.image_tags }}
+      is_latest: ${{ steps.floating.outputs.is_latest }}
+    steps:
+      - name: Resolve release tag
+        id: release
+        env:
+          REQUESTED_TAG: ${{ inputs.tag }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            tag="$REQUESTED_TAG"
+          else
+            tag="$GITHUB_REF_NAME"
+          fi
+          [[ "$tag" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]
+          printf 'tag=%s\n' "$tag" >> "$GITHUB_OUTPUT"
+          printf 'version=%s\n' "${tag#v}" >> "$GITHUB_OUTPUT"
+          if [[ "$tag" == *-* ]]; then
+            printf 'prerelease=true\n' >> "$GITHUB_OUTPUT"
+          else
+            printf 'prerelease=false\n' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.release.outputs.tag }}
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Validate release tag
+        id: source
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          git show-ref --verify --quiet "refs/tags/$TAG"
+          test "$(git rev-list -n 1 "$TAG")" = "$(git rev-parse HEAD)"
+          printf 'commit=%s\n' "$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Resolve floating image tags
+        id: floating
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+          PRERELEASE: ${{ steps.release.outputs.prerelease }}
+        run: |
+          # A pre-release gets only its exact version tag. A stable release also
+          # gets "MAJOR.MINOR", "MAJOR", and "latest", but a floating tag only
+          # moves forward: a patch for an older line must not overwrite it.
+          version="${TAG#v}"
+          tags="$version"
+          is_latest=false
+          if [ "$PRERELEASE" = "false" ]; then
+            stable=$(git tag -l 'v*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V)
+            major="${version%%.*}"
+            minor="${version%.*}"
+            highest=$(printf '%s\n' "$stable" | tail -n 1)
+            highest_major=$(printf '%s\n' "$stable" | grep -E "^v${major}\." | tail -n 1)
+            highest_minor=$(printf '%s\n' "$stable" | grep -E "^v${minor}\." | tail -n 1)
+            [ "$highest_minor" = "$TAG" ] && tags="$tags $minor"
+            [ "$highest_major" = "$TAG" ] && tags="$tags $major"
+            if [ "$highest" = "$TAG" ]; then
+              tags="$tags latest"
+              is_latest=true
+            fi
+          fi
+          echo "Image tags: $tags (latest=$is_latest)"
+          printf 'image_tags=%s\n' "$tags" >> "$GITHUB_OUTPUT"
+          printf 'is_latest=%s\n' "$is_latest" >> "$GITHUB_OUTPUT"
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      - name: Verify modules
+        run: |
+          gofmt_files=$(gofmt -l .)
+          test -z "$gofmt_files" || { echo "$gofmt_files"; exit 1; }
+          go mod verify
+          go vet ./...
+          go test ./...
+          go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...
+          for module in services/ai-logs-receiver services/synit-llm-guard; do
+            (cd "$module" && go mod verify && go vet ./... && go test ./... && go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...)
+          done
+          go run ./tools/thirdparty -check
+
+  publish-container:
+    name: Build & Publish Containers
+    needs: verify
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [synit-waf, ai-logs-receiver, synit-llm-guard]
+        include:
+          - service: synit-waf
+            context: .
+            file: ./Dockerfile
+            image: synit-waf
+          - service: ai-logs-receiver
+            context: ./services/ai-logs-receiver
+            file: ./services/ai-logs-receiver/Dockerfile
+            image: ai-logs-receiver
+          - service: synit-llm-guard
+            context: ./services/synit-llm-guard
+            file: ./services/synit-llm-guard/Dockerfile
+            image: synit-llm-guard
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.verify.outputs.commit }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+
+      - name: Log in to Docker Hub
+        env:
+          # Repository secrets: DOCKERHUB_USERNAME (or a repository variable
+          # with the same name) and DOCKERHUB_TOKEN, an access token with
+          # "Read & Write" scope for the synitio organization.
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME || vars.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          if [ -z "$DOCKERHUB_USERNAME" ] || [ -z "$DOCKERHUB_TOKEN" ]; then
+            echo "DOCKERHUB_USERNAME and DOCKERHUB_TOKEN must be configured" >&2
+            exit 1
+          fi
+          printf '%s' "$DOCKERHUB_TOKEN" | docker login docker.io -u "$DOCKERHUB_USERNAME" --password-stdin
+
+      - name: Log in to GHCR
+        if: needs.verify.outputs.is_latest == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: printf '%s' "$GITHUB_TOKEN" | docker login "$GHCR_REGISTRY" -u "${{ github.actor }}" --password-stdin
+
+      - name: Build and publish multi-arch image
+        env:
+          OWNER: ${{ github.repository_owner }}
+          TAG: ${{ needs.verify.outputs.tag }}
+          VERSION: ${{ needs.verify.outputs.version }}
+          IMAGE_TAGS: ${{ needs.verify.outputs.image_tags }}
+          IS_LATEST: ${{ needs.verify.outputs.is_latest }}
+          COMMIT: ${{ needs.verify.outputs.commit }}
+          TARGET_IMAGE: ${{ matrix.image }}
+          CONTEXT: ${{ matrix.context }}
+          DOCKERFILE: ${{ matrix.file }}
+        run: |
+          hub_image="docker.io/$DOCKERHUB_NAMESPACE/$TARGET_IMAGE"
+          tags=()
+          for image_tag in $IMAGE_TAGS; do
+            tags+=(--tag "$hub_image:$image_tag")
+          done
+          # GHCR receives only "latest", and only from the newest stable release.
+          if [ "$IS_LATEST" = "true" ]; then
+            tags+=(--tag "$GHCR_REGISTRY/$OWNER/$TARGET_IMAGE:latest")
+          fi
+
+          build_args=()
+          if [ "$TARGET_IMAGE" = "synit-waf" ]; then
+            build_args+=(--build-arg "VERSION=$TAG")
+          fi
+
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --file "$DOCKERFILE" \
+            --provenance=mode=max \
+            --sbom=true \
+            --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
+            --label "org.opencontainers.image.revision=$COMMIT" \
+            --label "org.opencontainers.image.version=$VERSION" \
+            --label "org.opencontainers.image.created=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --label "org.opencontainers.image.licenses=Apache-2.0" \
+            "${build_args[@]}" \
+            "${tags[@]}" \
+            --push \
+            "$CONTEXT"
+
+      - name: Prune GHCR to the latest release
+        # GHCR keeps only the manifests that "latest" references. Everything
+        # else (older tags, their per-platform manifests, attestations) is
+        # deleted. Requires the package to grant this repository admin access,
+        # which GHCR sets when the workflow publishes the package.
+        if: needs.verify.outputs.is_latest == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          TARGET_IMAGE: ${{ matrix.image }}
+        run: |
+          image="$GHCR_REGISTRY/$OWNER/$TARGET_IMAGE:latest"
+          index_digest=$(docker buildx imagetools inspect "$image" --format '{{.Manifest.Digest}}')
+          children=$(docker buildx imagetools inspect "$image" --raw | jq -r '.manifests[].digest')
+          keep=$(printf '%s\n%s\n' "$index_digest" "$children")
+          if [ "$(gh api "/users/$OWNER" --jq .type)" = "Organization" ]; then
+            api="/orgs/$OWNER/packages/container/$TARGET_IMAGE/versions"
+          else
+            api="/user/packages/container/$TARGET_IMAGE/versions"
+          fi
+          gh api --paginate "$api" --jq '.[] | "\(.id) \(.name)"' | while read -r id digest; do
+            if printf '%s\n' "$keep" | grep -qx "$digest"; then
+              continue
+            fi
+            echo "Deleting GHCR version $id ($digest)"
+            gh api --method DELETE "$api/$id" >/dev/null || echo "::warning::could not delete $id"
+          done
+
+  publish-binaries:
+    name: Build Binaries
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - { goos: linux, goarch: amd64, suffix: linux-amd64 }
+          - { goos: linux, goarch: arm64, suffix: linux-arm64 }
+          - { goos: linux, goarch: 386, suffix: linux-386 }
+          - { goos: linux, goarch: arm, goarm: "7", suffix: linux-armv7 }
+          - { goos: darwin, goarch: amd64, suffix: macos-amd64 }
+          - { goos: darwin, goarch: arm64, suffix: macos-arm64 }
+          - { goos: windows, goarch: amd64, suffix: windows-amd64, ext: .exe }
+          - { goos: windows, goarch: arm64, suffix: windows-arm64, ext: .exe }
+          - { goos: windows, goarch: 386, suffix: windows-386, ext: .exe }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.verify.outputs.commit }}
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      - name: Build
+        env:
+          CGO_ENABLED: "0"
+          GOOS: ${{ matrix.target.goos }}
+          GOARCH: ${{ matrix.target.goarch }}
+          GOARM: ${{ matrix.target.goarm }}
+          TARGET_SUFFIX: ${{ matrix.target.suffix }}
+          EXT: ${{ matrix.target.ext }}
+          TAG: ${{ needs.verify.outputs.tag }}
+        run: |
+          mkdir -p dist
+          go build \
+            -ldflags "-X 'github.com/synit-io/synit-waf/internal/waf.Version=$TAG'" \
+            -o "dist/synit-waf-${TARGET_SUFFIX}${EXT}" \
+            ./cmd/synit-waf
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: synit-waf-${{ matrix.target.suffix }}
+          path: dist/synit-waf-*
+          if-no-files-found: error
+
+  publish-release:
+    name: Create/Update GitHub Release
+    needs: [verify, publish-container, publish-binaries]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.verify.outputs.commit }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Download all binary artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: dist
+
+      - name: Build release notes from git history
+        env:
+          TAG: ${{ needs.verify.outputs.tag }}
+          VERSION: ${{ needs.verify.outputs.version }}
+        run: |
+          # The commit history is the changelog. The notes list the
+          # Conventional Commits between the previous tag and this one.
+          {
+            ./scripts/release-notes.sh "$TAG"
+            echo
+            echo "## Container images"
+            echo
+            echo "- Docker Hub: \`$DOCKERHUB_NAMESPACE/synit-waf:$VERSION\`, \`$DOCKERHUB_NAMESPACE/ai-logs-receiver:$VERSION\`, \`$DOCKERHUB_NAMESPACE/synit-llm-guard:$VERSION\`"
+            echo "- GHCR: \`ghcr.io/${{ github.repository_owner }}/synit-waf:latest\` and the two service images, updated only for the newest stable release"
+          } > release-notes.md
+          cat release-notes.md
+
+      - name: Create checksums
+        run: |
+          mapfile -t files < <(find dist -type f -name 'synit-waf-*' | sort)
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No release assets found" >&2
+            exit 1
+          fi
+          mkdir -p release-assets
+          for file in "${files[@]}"; do
+            cp "$file" "release-assets/$(basename "$file")"
+          done
+          cp third_party/THIRD_PARTY_NOTICES.txt third_party/manifest.json release-assets/
+          (cd release-assets && find . -maxdepth 1 -type f -printf '%f\n' | sort | xargs sha256sum > ../SHA256SUMS)
+
+      - name: Attest binary provenance
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          subject-checksums: SHA256SUMS
+
+      - name: Create or update GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.verify.outputs.tag }}
+          PRERELEASE: ${{ needs.verify.outputs.prerelease }}
+        run: |
+          existing=false
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            existing=true
+          else
+            gh release create "$TAG" --title "$TAG" --notes-file release-notes.md --draft --latest=false
+          fi
+
+          mapfile -t files < <(find release-assets -maxdepth 1 -type f | sort)
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No release assets found" >&2
+            exit 1
+          fi
+
+          gh release upload "$TAG" "${files[@]}" SHA256SUMS --clobber
+          if [ "$existing" = true ]; then
+            gh release edit "$TAG" --title "$TAG" --notes-file release-notes.md --prerelease="$PRERELEASE" --latest=false
+          else
+            gh release edit "$TAG" --draft=false --prerelease="$PRERELEASE" --latest=false
+          fi

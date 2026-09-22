@@ -37,7 +37,7 @@
       ]
     }
   ],
-  "notice_sha256": "a8ad4b65174aa805c46cad42c49f6b74e6a05510ba2ecb99fb8d8ce4933cd8e3",
+  "notice_sha256": "3e71f8327b48a462d56c7fb468cd40fc90643f9c1a331c27a8b6ecff6101abac",
   "dependencies": [
     {
       "path": "go.dev/toolchain",
@@ -1320,7 +1320,7 @@
     },
     {
       "path": "golang.org/x/crypto",
-      "version": "v0.55.0",
+      "version": "v0.56.0",
       "license": "BSD-3-Clause",
       "used_by": [
         "synit-llm-guard",

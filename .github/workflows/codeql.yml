@@ -28,7 +28,13 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
+      # Upload of the SARIF results.
       security-events: write
+      # The action reads its own workflow run (status report, diff range)
+      # and fails with "Resource not accessible by integration" without it.
+      actions: read
+      # Download of the CodeQL query packs from the GitHub package registry.
+      packages: read
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

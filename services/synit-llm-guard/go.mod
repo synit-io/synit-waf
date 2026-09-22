@@ -2,10 +2,7 @@ module github.com/synit-io/synit-waf/services/synit-llm-guard
 
 go 1.27.0
 
-require (
-	github.com/knights-analytics/hugot v0.7.7
-	github.com/yalue/onnxruntime_go v1.32.0 // indirect
-)
+require github.com/knights-analytics/hugot v0.7.7
 
 require (
 	github.com/daulet/tokenizers v1.27.0 // indirect
@@ -22,7 +19,8 @@ require (
 	github.com/knights-analytics/ortgenai v0.3.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/viant/afs v1.30.0 // indirect
-	golang.org/x/crypto v0.55.0 // indirect
+	github.com/yalue/onnxruntime_go v1.32.0 // indirect
+	golang.org/x/crypto v0.56.0 // indirect
 	golang.org/x/exp v0.0.0-20260727155853-b88d891fe743 // indirect
 	golang.org/x/image v0.45.0 // indirect
 	golang.org/x/sync v0.22.0 // indirect

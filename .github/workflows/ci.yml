@@ -94,9 +94,9 @@ jobs:
           go run ./tools/thirdparty -check
       - name: Scan for reachable Go vulnerabilities
         run: |
-          go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...
+          go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 ./...
           for module in services/ai-logs-receiver services/synit-llm-guard; do
-            (cd "$module" && go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...)
+            (cd "$module" && go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 ./...)
           done
 
   validate-assets:

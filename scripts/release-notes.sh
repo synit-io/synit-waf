@@ -87,6 +87,9 @@ for entry in "${sections[@]}"; do
 done
 emit_other
 
+# The backticks are Markdown code spans in the release notes, not command
+# substitution; single quotes keep them literal on purpose.
+# shellcheck disable=SC2016
 if [ -n "$previous" ]; then
   printf 'Full history: `git log %s..%s`\n' "$previous" "$tag"
 else

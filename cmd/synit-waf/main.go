@@ -135,7 +135,7 @@ func run() error {
 
 		dataServer := newServer(fmt.Sprintf(":%d", certmagic.HTTPSPort), publicHandler)
 		dataServer.TLSConfig = magic.TLSConfig()
-		challengeServer := newServer(fmt.Sprintf(":%d", certmagic.HTTPPort), acmeHTTPHandler(magic))
+		challengeServer := newServer(fmt.Sprintf(":%d", certmagic.HTTPPort), acmeHTTPHandler(magic, registry.HasTenant))
 		dataListener, err := net.Listen("tcp", dataServer.Addr)
 		if err != nil {
 			return fmt.Errorf("bind HTTPS listener %s: %w", dataServer.Addr, err)
@@ -217,13 +217,21 @@ func configureACME(cfg waf.AppConfig) {
 	}
 }
 
-func acmeHTTPHandler(magic *certmagic.Config) http.Handler {
+// acmeHTTPHandler answers ACME HTTP-01 challenges on the plain HTTP port and
+// redirects everything else to HTTPS. Only configured tenant hosts are
+// redirected: reflecting an arbitrary Host header would turn the listener
+// into an open redirect.
+func acmeHTTPHandler(magic *certmagic.Config, isTenant func(host string) bool) http.Handler {
 	redirect := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		host := r.Host
 		if parsedHost, _, err := net.SplitHostPort(r.Host); err == nil {
 			host = parsedHost
 		}
-		http.Redirect(w, r, "https://"+host+r.URL.RequestURI(), http.StatusPermanentRedirect)
+		if !isTenant(host) {
+			http.Error(w, "Not Found", http.StatusNotFound)
+			return
+		}
+		http.Redirect(w, r, "https://"+host+r.URL.RequestURI(), http.StatusPermanentRedirect) // #nosec G710 -- host is a configured tenant, checked above
 	})
 	if len(magic.Issuers) > 0 {
 		if issuer, ok := magic.Issuers[0].(*certmagic.ACMEIssuer); ok {

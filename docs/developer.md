@@ -195,7 +195,7 @@ Commit the regenerated files with the dependency change. Details are in [third_p
 - Build Container Images: builds the three Docker images without pushing and runs `synit-waf -version` in the WAF image.
 - E2E (Host) and E2E (Docker).
 
-`.github/workflows/codeql.yml` runs CodeQL for Go on the same branches and weekly. `.github/dependabot.yml` keeps Go modules, Dockerfiles, Compose and Kubernetes image references, and GitHub Actions current. All third-party actions are pinned to a commit SHA; the CodeQL actions use the `v3` tag and are pinned by Dependabot's first update.
+Static security analysis runs inside the lint job: `gosec` is enabled in `.golangci.yml` next to `staticcheck`, and `govulncheck` covers known vulnerabilities in dependencies. There is no CodeQL workflow; it needs GitHub code scanning on the repository, which is a repository setting rather than something the workflow can provide. Enable GitHub's CodeQL default setup in the repository settings if code-scanning alerts in the Security tab are wanted; no workflow file is required for that. `.github/dependabot.yml` keeps Go modules, Dockerfiles, Compose and Kubernetes image references, and GitHub Actions current. All third-party actions are pinned to a commit SHA.
 
 ## Release workflow
 

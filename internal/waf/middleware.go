@@ -731,8 +731,7 @@ func (ts *TenantState) selectUpstream() *UpstreamServer {
 	now := time.Now().Unix()
 	for range numUpstreams {
 		counter := ts.counter.Add(1)
-		idx := int(counter % uint64(numUpstreams))
-		upstream := upstreams[idx]
+		upstream := upstreams[counter%uint64(numUpstreams)]
 
 		// Passive Health Check (Circuit Breaker)
 		if deadUntil := upstream.deadUntil.Load(); deadUntil > 0 {
@@ -823,7 +822,8 @@ func (h *ProxyHandler) buildTenantState(fqdn string, tenant Tenant) (*TenantStat
 		}
 
 		if tenant.UpstreamInsecure != nil && *tenant.UpstreamInsecure {
-			transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+			// Operator opt-in per tenant for upstreams with private certificates.
+			transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true} // #nosec G402 -- explicit upstreamInsecure setting
 		}
 
 		upstream := &UpstreamServer{

@@ -597,7 +597,7 @@ func run() error {
 		MaxHeaderBytes:    64 << 10,
 	}
 
-	log.Printf("AI Logs Receiver listening on %s", addr)
+	log.Printf("AI Logs Receiver listening on %s", addr) // #nosec G706 -- addr is built from the PORT environment variable
 	serverErrors := make(chan error, 1)
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {

@@ -14,12 +14,31 @@ linters:
     - ineffassign
     - misspell
     - revive
+    # Static security analysis. It replaces a CodeQL workflow, which needs
+    # GitHub code scanning enabled on the repository and cannot run in CI alone.
+    - gosec
   settings:
     revive:
       rules:
         - name: exported
           severity: warning
           disabled: false
+    gosec:
+      excludes:
+        # G304 (file inclusion via variable): every path the WAF opens comes
+        # from the operator's configuration file or CLI flags (config, tenant
+        # shards, TLS material, block pages, log files), never from a request.
+        - G304
+  exclusions:
+    rules:
+      # Test code and the notice generator spawn `go`, write world-readable
+      # generated files, and use fixture tokens on purpose.
+      - path: '(^|/)[^/]+_test\.go$'
+        linters: [gosec]
+      - path: '^test/'
+        linters: [gosec]
+      - path: '^tools/thirdparty/'
+        linters: [gosec]
 
 formatters:
   enable:

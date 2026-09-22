@@ -333,7 +333,8 @@ func (h *ProxyHandler) applyLLMProtection(w http.ResponseWriter, r *http.Request
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusForbidden)
-		_, _ = fmt.Fprintf(w, `{"error": "Forbidden", "message": "Potential prompt injection detected (score: %.2f)"}`, highestScore)
+		// The only variable part is a formatted float in a JSON body.
+		_, _ = fmt.Fprintf(w, `{"error": "Forbidden", "message": "Potential prompt injection detected (score: %.2f)"}`, highestScore) // #nosec G705
 		return true
 	}
 

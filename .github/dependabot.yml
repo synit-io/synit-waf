@@ -1,6 +1,5 @@
 # Dependabot keeps Go modules, container base images, image references in
-# Compose and Kubernetes files, and GitHub Actions current. Actions referenced
-# by tag (the CodeQL actions) are pinned to a commit SHA by the first update.
+# Compose and Kubernetes files, and GitHub Actions current.
 version: 2
 updates:
   # Go modules: the WAF and both services. tools/thirdparty is part of the

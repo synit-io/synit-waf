@@ -17,7 +17,7 @@ import (
 
 const (
 	maxAccessLogFieldBytes = 2048
-	devBypassHeader        = "X-Synit-Dev-Bypass"
+	devBypassHeader        = "X-Synit-Dev-Bypass" // #nosec G101 -- header name, the secret is configured per tenant
 )
 
 // devBypassGranted reports whether the request carries the tenant's

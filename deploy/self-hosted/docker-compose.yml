@@ -60,7 +60,7 @@ services:
     # possible. Probe http://127.0.0.1:9090/readyz from the host or monitoring.
 
   crowdsec:
-    image: crowdsecurity/crowdsec:latest@sha256:2f527c9bb8b367120eb08b82890aa912ce96bfa1ada93dda0721700e4b4e0dde
+    image: crowdsecurity/crowdsec:latest@sha256:0f2523fa61ef507f15d953045cface490cc880670c62f2755ced17524107f71a
     environment:
       COLLECTIONS: "crowdsecurity/linux crowdsecurity/http-cve"
     volumes:

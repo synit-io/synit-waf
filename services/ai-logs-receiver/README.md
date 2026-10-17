@@ -7,7 +7,7 @@ AI Logs Receiver is an optional standalone HTTP service that accepts bearer-auth
 The service uses these environment variables:
 
 - `AI_LOG_TOKENS` is required. It is a JSON object mapping each tenant ID to one static bearer token of at least 32 characters.
-- `LOGS_DIR` is the base output directory. Default: `./logs`; the published image sets `/data/ai-logs`.
+- `LOGS_DIR` is the base output directory. Default: `./logs`; the Dockerfile sets `/data/ai-logs`.
 - `PORT` is the TCP port bound on `0.0.0.0`. Default: `8082`.
 - `MAX_REQUEST_BYTES` limits one body. Default: `10485760` (10 MiB).
 - `MAX_TENANT_BYTES` caps regular files in one tenant directory. Default: `1073741824` (1 GiB).
@@ -104,10 +104,10 @@ Both endpoints accept `GET` and `HEAD`; other methods return `405` with an `Allo
 
 ## Container
 
-Release images are published as `synitio/ai-logs-receiver:<version>` on Docker Hub. Pin production deployments by digest. To build from source:
+**This optional service is not built or published as a container image by GitHub workflows. Build it yourself.** From the repository root, use the service directory as its Docker build context:
 
 ```bash
-docker build -t ai-logs-receiver:local .
+docker build -t ai-logs-receiver:local services/ai-logs-receiver
 docker run --rm -p 127.0.0.1:8082:8082 \
   -e AI_LOG_TOKENS='{"tenant-a":"replace-with-a-long-random-token"}' \
   -v ai-logs:/data/ai-logs \
@@ -115,6 +115,8 @@ docker run --rm -p 127.0.0.1:8082:8082 \
 ```
 
 The image is distroless, has no shell, and contains only the static binary.
+
+The [receiver Compose example](../../deploy/log-receiver/docker-compose.yml) uses this local tag by default. For another host or a cluster, [tag and push the image to your own registry](../../docs/deployment_models.md#build-the-optional-services), set `AI_LOGS_RECEIVER_IMAGE` to that reference, and pin its digest in production. The receiver needs writable persistent storage owned by UID/GID `65532`; a Docker named volume is initialized with the image's directory ownership.
 
 ## Tests
 

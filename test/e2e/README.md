@@ -11,6 +11,6 @@ This folder contains end-to-end cross-component integration tests.
 
 `TestMain` builds the WAF and receiver binaries once. Each WAF process receives separate random public and admin addresses and is stopped with SIGTERM; a process that does not exit cleanly fails the test. Readiness and metrics assertions target the admin listener; application and liveness requests target the public listener.
 
-Run the suite with `make test-e2e-host` or `./scripts/run-e2e.sh`. `./scripts/run-docker-e2e.sh` builds the container image and runs a smaller scenario through Docker Compose.
+Run the suite with `make test-e2e-host` or `./scripts/run-e2e.sh`. `./scripts/run-docker-e2e.sh` builds the container image and runs a smaller scenario through Docker Compose. It waits for public liveness and admin readiness, including upstream health, before asserting routed responses.
 
 Package-level unit tests remain colocated with source files in each Go package, which is the standard Go test layout for testing package-internal behavior.

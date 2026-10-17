@@ -9,6 +9,9 @@
 #     random characters); both containers read it
 #   - provide the PVCs waf-tenants-pvc, waf-geoip-pvc, and llm-model-pvc
 #     (the exported ONNX model directory; no model is bundled)
+#   - build the optional guard image yourself, push it to your own registry,
+#     and replace its image placeholder below (GitHub workflows publish only
+#     the WAF image; see docs/deployment_models.md for build commands)
 #   - pin the image digests (see the image fields)
 #   - restrict access to the admin port 9090 with a NetworkPolicy
 #
@@ -111,8 +114,8 @@ spec:
 
       # LLM guard sidecar
       - name: llm-guard
-        # Pin the digest: synitio/synit-llm-guard:1.0.0@sha256:<digest>
-        image: synitio/synit-llm-guard:1.0.0
+        # Replace with your own image and pin its digest before deploying.
+        image: registry.example.com/your-team/synit-llm-guard:1.0.0
         securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true

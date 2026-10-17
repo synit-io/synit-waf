@@ -15,11 +15,45 @@ Point liveness, startup, and readiness probes at the admin listener. Keep it on 
 
 ## Container images
 
-Release images are published to Docker Hub as `synitio/synit-waf`, `synitio/ai-logs-receiver`, and `synitio/synit-llm-guard` with the tags `1.0.0`, `1.0`, `1`, and `latest` (no `v` prefix). Versioned tags exist only there. `ghcr.io/synit-io/<image>` carries only the `latest` tag of the newest stable release. Every template in this repository references `synitio/<image>:<version>`; before production, append the digest of the release you deploy (`synitio/synit-waf:1.0.0@sha256:<digest>`) so a moved tag cannot change what runs.
+**GitHub workflows build and publish only the main `synit-waf` image. Operators must build the optional LLM guard and AI Logs Receiver themselves; no add-on release images are published.**
+
+WAF release images are published to Docker Hub as `synitio/synit-waf` with the tags `1.0.0`, `1.0`, `1`, and `latest` (no `v` prefix). Versioned tags exist only there. `ghcr.io/synit-io/synit-waf` carries only the `latest` tag of the newest stable release. Before production, append the digest of the release you deploy (`synitio/synit-waf:1.0.0@sha256:<digest>`) so a moved tag cannot change what runs.
 
 The WAF image is distroless and runs as UID `65532`. The binary is `/usr/local/bin/synit-waf`; `LICENSE`, `NOTICE`, and the third-party notices are under `/usr/share/doc/synit-waf/`. The image contains the example rule profiles under `/etc/waf/rules/profiles/` and empty `/etc/waf/certs/acme` and `/etc/waf/geoip` directories owned by the runtime user. It has no shell and no HTTP client, so container-level health checks must come from the platform (Kubernetes `httpGet` probes, a load balancer, or an external monitor), not from a command inside the container.
 
 The container can run with a read-only root filesystem and without capabilities (binding port `80` as UID `65532` works with Docker's default unprivileged-port setting), but Coraza verifies at startup that it can create a temporary file, so `/tmp` must be writable: mount a `tmpfs` (Compose, Swarm) or an `emptyDir` (Kubernetes) there. All templates in this repository do this.
+
+### Build the optional services
+
+From the repository root, build each add-on using its service directory as the context; the root context excludes `services/`:
+
+```bash
+docker build -t ai-logs-receiver:local services/ai-logs-receiver
+docker build -t synit-llm-guard:local services/synit-llm-guard
+```
+
+The [receiver Compose file](../deploy/log-receiver/docker-compose.yml) defaults to `ai-logs-receiver:local`; the [LLM Compose file](../deploy/self-hosted/docker-compose-llm.yml) defaults to `synit-llm-guard:local`. Build the required image on the same Docker host before starting Compose. `AI_LOGS_RECEIVER_IMAGE` and `LLM_GUARD_IMAGE` override these tags.
+
+For a remote host or Kubernetes, replace the registry placeholder below with a repository you can push to, authenticate with `docker login`, then tag and push your builds:
+
+```bash
+REGISTRY=registry.example.com/your-team
+docker tag ai-logs-receiver:local "$REGISTRY/ai-logs-receiver:1.0.0"
+docker tag synit-llm-guard:local "$REGISTRY/synit-llm-guard:1.0.0"
+docker push "$REGISTRY/ai-logs-receiver:1.0.0"
+docker push "$REGISTRY/synit-llm-guard:1.0.0"
+```
+
+These tags are operator-assigned versions. Set the deployment's image reference to your registry image, pin its digest for production, and configure registry pull credentials when needed. Local builds target the Docker builder's platform; for a cluster with both architectures, build and push each image with Buildx instead:
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 \
+  -t "$REGISTRY/ai-logs-receiver:1.0.0" --push services/ai-logs-receiver
+docker buildx build --platform linux/amd64,linux/arm64 \
+  -t "$REGISTRY/synit-llm-guard:1.0.0" --push services/synit-llm-guard
+```
+
+The guard image contains no model. Mount an operator-selected Hugging Face-compatible ONNX directory with `model.onnx`, `tokenizer.json`, and `config.json`, readable by UID/GID `65532`; configure the model's safe and injection labels and a shared bearer token. Its pure-Go backend needs no ONNX Runtime shared library. The receiver needs a tenant-to-token map and writable persistent storage owned by UID/GID `65532`. See the [guard](../services/synit-llm-guard/README.md) and [receiver](../services/ai-logs-receiver/README.md) READMEs for model compatibility, authentication, limits, and readiness checks.
 
 ## 1. Local binary
 
@@ -82,7 +116,7 @@ Most request processing is stateless, but caches, active health state, global ra
 
 Both templates:
 
-- reference `synitio/synit-waf:1.0.0` (and `synitio/synit-llm-guard:1.0.0`); append the digest before use;
+- reference `synitio/synit-waf:1.0.0`; the LLM template also has a placeholder for your own guard image. Replace that reference and pin both image digests before use;
 - run every container with `runAsNonRoot`, UID `65532`, a read-only root filesystem, no privilege escalation, all capabilities dropped, and the `RuntimeDefault` seccomp profile;
 - set CPU and memory requests and limits; adjust them after load testing;
 - probe the admin listener (`/livez` for startup and liveness, `/readyz` for readiness) on port `9090`, and the guard's `/livez` and `/readyz` on port `5001`;
@@ -149,7 +183,7 @@ The file variant fits Docker and Swarm secrets (`/run/secrets/<name>`) and mount
 
 ## Optional companion services
 
-The WAF can run without either companion service.
+The WAF can run without either companion service. Both services are built by operators using the [instructions above](#build-the-optional-services).
 
 - `services/ai-logs-receiver` accepts bearer-authenticated NDJSON or single-event JSON log payloads and stores daily append-only files per tenant ID. Configure tokens of at least 32 characters with `AI_LOG_TOKENS`. It exposes `/healthz` and `/readyz`.
 - `services/synit-llm-guard` exposes authenticated `/v1/detect` for `ml` or `hybrid` LLM protection and requires an operator-mounted ONNX model. It exposes `/livez` and `/readyz`.

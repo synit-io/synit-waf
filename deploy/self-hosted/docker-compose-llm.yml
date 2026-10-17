@@ -13,6 +13,10 @@
 #   LLM_GUARD_AUTH_TOKEN  bearer token shared by the WAF and the guard, at
 #                         least 32 random characters (openssl rand -hex 32)
 #   LLM_MODEL_DIR         absolute path of the exported ONNX model directory
+#
+# Build the add-on manually from the repository root before starting Compose:
+#   docker build -t synit-llm-guard:local services/synit-llm-guard
+# Set LLM_GUARD_IMAGE to use your own registry image instead.
 services:
   synit-waf:
     # Versioned images are published on Docker Hub only. Pin the digest of the
@@ -50,8 +54,8 @@ services:
     restart: unless-stopped
 
   synit-llm-guard:
-    # Pin the digest: synitio/synit-llm-guard:1.0.0@sha256:<digest>
-    image: synitio/synit-llm-guard:1.0.0
+    # GitHub workflows do not build or publish this optional service.
+    image: "${LLM_GUARD_IMAGE:-synit-llm-guard:local}"
     expose:
       - "5001"
     environment:

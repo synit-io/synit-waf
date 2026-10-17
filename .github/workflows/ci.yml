@@ -146,44 +146,22 @@ jobs:
         run: make check-links
 
   docker-build:
-    name: Build Container Images
+    name: Build WAF Container Image
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - image: synit-waf
-            context: .
-            file: ./Dockerfile
-          - image: ai-logs-receiver
-            context: ./services/ai-logs-receiver
-            file: ./services/ai-logs-receiver/Dockerfile
-          - image: synit-llm-guard
-            context: ./services/synit-llm-guard
-            file: ./services/synit-llm-guard/Dockerfile
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
       - name: Build image (no push)
-        env:
-          IMAGE: ${{ matrix.image }}
-          CONTEXT: ${{ matrix.context }}
-          DOCKERFILE: ${{ matrix.file }}
         run: |
-          build_args=()
-          if [ "$IMAGE" = "synit-waf" ]; then
-            build_args+=(--build-arg "VERSION=ci-${GITHUB_SHA::12}")
-          fi
           docker buildx build --load \
-            --file "$DOCKERFILE" \
-            --tag "$IMAGE:ci" \
-            "${build_args[@]}" \
-            "$CONTEXT"
+            --file ./Dockerfile \
+            --tag synit-waf:ci \
+            --build-arg "VERSION=ci-${GITHUB_SHA::12}" \
+            .
       - name: Smoke test the WAF image
-        if: matrix.image == 'synit-waf'
         run: |
           docker run --rm synit-waf:ci -version
           docker run --rm --read-only --tmpfs /tmp --cap-drop ALL \
@@ -201,6 +179,7 @@ jobs:
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: ${{ env.GO_VERSION }}
+          check-latest: true
       - name: Run host e2e tests
         run: ./scripts/run-e2e.sh
 

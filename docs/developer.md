@@ -146,6 +146,8 @@ The access log line and the request metrics are written in a deferred function, 
 
 ## Optional services
 
+**GitHub workflows build and publish only the main WAF container image. Build companion images yourself using the service directory as the Docker context; see [deployment models](./deployment_models.md#build-the-optional-services).** Go linting, tests, and security checks still cover all three modules.
+
 ### AI logs receiver
 
 The receiver requires `AI_LOG_TOKENS`, a JSON object mapping tenant IDs to bearer tokens of at least 32 characters:
@@ -175,7 +177,7 @@ It exposes `/livez`, `/readyz`, and the bearer-authenticated `POST /v1/detect`. 
 
 ## Third-party notices
 
-`tools/thirdparty` generates `third_party/THIRD_PARTY_NOTICES.txt` and `third_party/manifest.json` for the WAF and identical copies under each service directory. It resolves the compiled dependencies of every binary for every released platform (the union of the release matrix, so the result does not depend on the host), identifies each dependency's SPDX licence, and collects the licence and notice files.
+`tools/thirdparty` generates `third_party/THIRD_PARTY_NOTICES.txt` and `third_party/manifest.json` for the WAF and identical copies under each service directory. It resolves the compiled dependencies of every binary for its supported platforms (the WAF release matrix and both Linux image architectures for the companion services, so the result does not depend on the host), identifies each dependency's SPDX licence, and collects the licence and notice files.
 
 ```bash
 go run ./tools/thirdparty            # regenerate after a dependency change
@@ -192,10 +194,10 @@ Commit the regenerated files with the dependency change. Details are in [third_p
 - Lint (Go): `golangci-lint` for all three modules.
 - Unit Tests (Go): `gofmt` check, `go vet`, race tests for all three modules, `go mod verify`, `tools/thirdparty -check`, and `govulncheck`.
 - Validate Workflows and Deployment Assets: `actionlint`, `kubeconform` for `deploy/kubernetes/`, `shellcheck`, `-validate-config` for every sample and example configuration, `docker compose config` for every Compose file, a YAML parse of `assets/openapi.yaml`, and `make check-links`.
-- Build Container Images: builds the three Docker images without pushing and runs `synit-waf -version` in the WAF image.
+- Build WAF Container Image: builds only the main WAF image without pushing and runs `synit-waf -version` in it. Companion images are built manually by operators.
 - E2E (Host) and E2E (Docker).
 
-Static security analysis runs inside the lint job: `gosec` is enabled in `.golangci.yml` next to `staticcheck`, and `govulncheck` covers known vulnerabilities in dependencies. There is no CodeQL workflow; it needs GitHub code scanning on the repository, which is a repository setting rather than something the workflow can provide. Enable GitHub's CodeQL default setup in the repository settings if code-scanning alerts in the Security tab are wanted; no workflow file is required for that. `.github/dependabot.yml` keeps Go modules, Dockerfiles, Compose and Kubernetes image references, and GitHub Actions current. All third-party actions are pinned to a commit SHA.
+Static security analysis runs inside the lint job: `gosec` is enabled in `.golangci.yml` next to `staticcheck`, and `govulncheck` covers known vulnerabilities in dependencies. There is no CodeQL workflow; it needs GitHub code scanning on the repository, which is a repository setting rather than something the workflow can provide. Enable GitHub's CodeQL default setup in the repository settings if code-scanning alerts in the Security tab are wanted; no workflow file is required for that. `.github/dependabot.yml` keeps Go modules, Dockerfiles, published Compose and Kubernetes image references, and GitHub Actions current; local optional-service tags and registry placeholders are ignored. After a Dependabot Go update, run `make notices` and include the generated files in the same pull request so the notices freshness check passes. All third-party actions are pinned to a commit SHA.
 
 ## Release workflow
 
@@ -216,7 +218,7 @@ git push origin v1.0.0
 A tag with a pre-release suffix (`v1.1.0-rc.1`) is published as a pre-release. The workflow:
 
 - verifies formatting, modules, tests, `govulncheck`, and the third-party notices on the tagged commit;
-- builds multi-architecture (`linux/amd64`, `linux/arm64`) images for `synit-waf`, `ai-logs-receiver`, and `synit-llm-guard` with SBOM and provenance attestations, and pushes them to Docker Hub as `synitio/<image>:X.Y.Z`. A stable release also receives the floating tags `X.Y`, `X`, and `latest` when it is the newest release of that line; a pre-release only gets its exact version. `ghcr.io/synit-io/<image>:latest` is updated only for the newest stable release, and older GHCR versions are pruned. Docker Hub needs the repository secrets `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`;
+- builds only the main `synit-waf` image for `linux/amd64` and `linux/arm64` with SBOM and provenance attestations, and pushes it to Docker Hub as `synitio/synit-waf:X.Y.Z`. A stable release also receives the floating tags `X.Y`, `X`, and `latest` when it is the newest release of that line; a pre-release only gets its exact version. `ghcr.io/synit-io/synit-waf:latest` is updated only for the newest stable release, and older GHCR versions are pruned. Docker Hub needs the repository secrets `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`;
 - builds `synit-waf` binaries for Linux (amd64, arm64, 386, armv7), macOS (amd64, arm64), and Windows (amd64, arm64, 386);
 - publishes a GitHub Release whose notes are the grouped commit list plus the image references, together with the binaries, `THIRD_PARTY_NOTICES.txt`, `manifest.json`, `SHA256SUMS`, and a build provenance attestation for the checksums.
 

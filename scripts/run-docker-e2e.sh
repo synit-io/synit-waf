@@ -40,9 +40,12 @@ EOF
 
 docker compose -f "$COMPOSE_FILE" up -d --build
 
+# Compose starts both containers concurrently, so listener liveness alone does
+# not guarantee that the upstream is ready for routing.
 ready=0
 for _ in {1..30}; do
-  if curl -fsS http://localhost:8080/healthz | grep -q "ok"; then
+  if curl -fsS http://localhost:8080/healthz | grep -q "ok" &&
+    curl -fsS http://localhost:9090/readyz | grep -q '"ready":true'; then
     ready=1
     break
   fi

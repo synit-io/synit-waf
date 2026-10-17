@@ -1,6 +1,6 @@
 # Third-party notices
 
-Synit WAF distributes the license and notice texts for the dependencies compiled into its three Go binaries. These notices are separate from the project's own license (Apache-2.0, see `LICENSE` and `NOTICE`).
+The repository maintains the license and notice texts for the dependencies compiled into its three Go binaries, including the two companion services built by operators. These notices are separate from the project's own license (Apache-2.0, see `LICENSE` and `NOTICE`).
 
 ## Generated artifacts
 
@@ -26,7 +26,7 @@ The generator (`tools/thirdparty`) follows compiled package dependencies, not ev
 | `ai-logs-receiver` | `services/ai-logs-receiver` | `.` | the container image platforms linux/amd64 and linux/arm64 |
 | `synit-llm-guard` | `services/synit-llm-guard` | `.` | the container image platforms linux/amd64 and linux/arm64 |
 
-For each binary it runs `go list -deps -json` once per platform with `GOOS`/`GOARCH` set and workspace mode disabled, and takes the union of the modules found. The result therefore does not depend on the machine that runs the generator, and a dependency that is compiled only on one platform (for example a Windows-only package) is still covered. The platform list mirrors the matrices in `.github/workflows/release.yml` and is recorded per binary in the manifest's `coverage` entries.
+For each binary it runs `go list -deps -json` once per platform with `GOOS`/`GOARCH` set and workspace mode disabled, and takes the union of the modules found. The result therefore does not depend on the machine that runs the generator, and a dependency that is compiled only on one platform (for example a Windows-only package) is still covered. The WAF platform list mirrors the matrices in `.github/workflows/release.yml`; the companion services cover both Linux image architectures for manual builds. Platforms are recorded per binary in the manifest's `coverage` entries.
 
 The generator records exact module versions and replacements, de-duplicates dependencies shared by several binaries (`used_by` lists the binaries), and collects notice-like files (`LICENSE*`, `LICENCE*`, `COPYING*`, `NOTICE*`, `PATENTS*`, `COPYRIGHT*`, `AUTHORS*`, `CONTRIBUTORS*`, `UNLICENSE*`) from each dependency's module root. The Go standard library and runtime license and patent grant are included explicitly. Generation fails if a compiled third-party module has no root notice file.
 

@@ -70,6 +70,9 @@ updates:
       day: "monday"
       time: "06:00"
     labels: ["dependencies", "docker"]
+    # Operators replace this placeholder with their own optional-service image.
+    ignore:
+      - dependency-name: "your-team/synit-llm-guard"
 
   # Image references in the Compose files and the Swarm stack.
   - package-ecosystem: "docker-compose"
@@ -79,6 +82,9 @@ updates:
       day: "monday"
       time: "06:00"
     labels: ["dependencies", "docker"]
+    # Optional services are built locally rather than published by this repo.
+    ignore:
+      - dependency-name: "synit-llm-guard"
 
   - package-ecosystem: "docker-compose"
     directory: "/deploy/log-receiver"
@@ -87,6 +93,8 @@ updates:
       day: "monday"
       time: "06:00"
     labels: ["dependencies", "docker"]
+    ignore:
+      - dependency-name: "ai-logs-receiver"
 
   - package-ecosystem: "docker-compose"
     directory: "/assets/examples/cluster"

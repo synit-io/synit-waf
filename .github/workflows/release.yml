@@ -120,30 +120,13 @@ jobs:
           go run ./tools/thirdparty -check
 
   publish-container:
-    name: Build & Publish Containers
+    name: Build & Publish WAF Container
     needs: verify
     permissions:
       contents: read
       packages: write
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      matrix:
-        service: [synit-waf, ai-logs-receiver, synit-llm-guard]
-        include:
-          - service: synit-waf
-            context: .
-            file: ./Dockerfile
-            image: synit-waf
-          - service: ai-logs-receiver
-            context: ./services/ai-logs-receiver
-            file: ./services/ai-logs-receiver/Dockerfile
-            image: ai-logs-receiver
-          - service: synit-llm-guard
-            context: ./services/synit-llm-guard
-            file: ./services/synit-llm-guard/Dockerfile
-            image: synit-llm-guard
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -184,28 +167,20 @@ jobs:
           IMAGE_TAGS: ${{ needs.verify.outputs.image_tags }}
           IS_LATEST: ${{ needs.verify.outputs.is_latest }}
           COMMIT: ${{ needs.verify.outputs.commit }}
-          TARGET_IMAGE: ${{ matrix.image }}
-          CONTEXT: ${{ matrix.context }}
-          DOCKERFILE: ${{ matrix.file }}
         run: |
-          hub_image="docker.io/$DOCKERHUB_NAMESPACE/$TARGET_IMAGE"
+          hub_image="docker.io/$DOCKERHUB_NAMESPACE/synit-waf"
           tags=()
           for image_tag in $IMAGE_TAGS; do
             tags+=(--tag "$hub_image:$image_tag")
           done
           # GHCR receives only "latest", and only from the newest stable release.
           if [ "$IS_LATEST" = "true" ]; then
-            tags+=(--tag "$GHCR_REGISTRY/$OWNER/$TARGET_IMAGE:latest")
-          fi
-
-          build_args=()
-          if [ "$TARGET_IMAGE" = "synit-waf" ]; then
-            build_args+=(--build-arg "VERSION=$TAG")
+            tags+=(--tag "$GHCR_REGISTRY/$OWNER/synit-waf:latest")
           fi
 
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
-            --file "$DOCKERFILE" \
+            --file ./Dockerfile \
             --provenance=mode=max \
             --sbom=true \
             --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
@@ -213,10 +188,10 @@ jobs:
             --label "org.opencontainers.image.version=$VERSION" \
             --label "org.opencontainers.image.created=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --label "org.opencontainers.image.licenses=Apache-2.0" \
-            "${build_args[@]}" \
+            --build-arg "VERSION=$TAG" \
             "${tags[@]}" \
             --push \
-            "$CONTEXT"
+            .
 
       - name: Prune GHCR to the latest release
         # GHCR keeps only the manifests that "latest" references. Everything
@@ -228,16 +203,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
-          TARGET_IMAGE: ${{ matrix.image }}
         run: |
-          image="$GHCR_REGISTRY/$OWNER/$TARGET_IMAGE:latest"
+          image="$GHCR_REGISTRY/$OWNER/synit-waf:latest"
           index_digest=$(docker buildx imagetools inspect "$image" --format '{{.Manifest.Digest}}')
           children=$(docker buildx imagetools inspect "$image" --raw | jq -r '.manifests[].digest')
           keep=$(printf '%s\n%s\n' "$index_digest" "$children")
           if [ "$(gh api "/users/$OWNER" --jq .type)" = "Organization" ]; then
-            api="/orgs/$OWNER/packages/container/$TARGET_IMAGE/versions"
+            api="/orgs/$OWNER/packages/container/synit-waf/versions"
           else
-            api="/user/packages/container/$TARGET_IMAGE/versions"
+            api="/user/packages/container/synit-waf/versions"
           fi
           gh api --paginate "$api" --jq '.[] | "\(.id) \(.name)"' | while read -r id digest; do
             if printf '%s\n' "$keep" | grep -qx "$digest"; then
@@ -335,8 +309,10 @@ jobs:
             echo
             echo "## Container images"
             echo
-            echo "- Docker Hub: \`$DOCKERHUB_NAMESPACE/synit-waf:$VERSION\`, \`$DOCKERHUB_NAMESPACE/ai-logs-receiver:$VERSION\`, \`$DOCKERHUB_NAMESPACE/synit-llm-guard:$VERSION\`"
-            echo "- GHCR: \`ghcr.io/${{ github.repository_owner }}/synit-waf:latest\` and the two service images, updated only for the newest stable release"
+            echo "- Docker Hub: \`$DOCKERHUB_NAMESPACE/synit-waf:$VERSION\`"
+            echo "- GHCR: \`ghcr.io/${{ github.repository_owner }}/synit-waf:latest\`, updated only for the newest stable release"
+            echo
+            echo "The optional LLM guard and log receiver require [operator builds](https://github.com/${{ github.repository }}/blob/$TAG/docs/deployment_models.md#build-the-optional-services)."
           } > release-notes.md
           cat release-notes.md
 

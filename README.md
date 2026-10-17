@@ -198,12 +198,12 @@ Self-hosted Compose, Kubernetes, and Docker Swarm templates are available under 
 
 ## Container images
 
-Release images are published to two registries:
+**GitHub workflows build and publish only the main `synit-waf` image. The optional LLM guard and AI Logs Receiver must be built by operators; no release images are published for these add-ons.**
 
 | Registry | Images | Tags |
 |---|---|---|
-| Docker Hub | `synitio/synit-waf`, `synitio/ai-logs-receiver`, `synitio/synit-llm-guard` | `1.0.0`, `1.0`, `1`, `latest` (no `v` prefix) |
-| GitHub Container Registry | `ghcr.io/synit-io/synit-waf`, `ghcr.io/synit-io/ai-logs-receiver`, `ghcr.io/synit-io/synit-llm-guard` | `latest` only |
+| Docker Hub | `synitio/synit-waf` | `1.0.0`, `1.0`, `1`, `latest` (no `v` prefix) |
+| GitHub Container Registry | `ghcr.io/synit-io/synit-waf` | `latest` only |
 
 Versioned tags exist only on Docker Hub. GHCR carries the `latest` tag of the newest stable release, and older GHCR versions are pruned. Use Docker Hub for anything that must be reproducible:
 
@@ -212,6 +212,8 @@ docker pull synitio/synit-waf:1.0.0
 ```
 
 For production, pin the digest as well (`synitio/synit-waf:1.0.0@sha256:<digest>`), so a moved tag cannot change what runs. Images are built for `linux/amd64` and `linux/arm64`.
+
+Build the optional services from their own Docker contexts as described in [deployment models](./docs/deployment_models.md#build-the-optional-services), the [LLM guard README](./services/synit-llm-guard/README.md#container), and the [AI Logs Receiver README](./services/ai-logs-receiver/README.md#container). The Compose examples use local add-on tags; Kubernetes requires an image you build and push to your own registry.
 
 ## Configuration
 

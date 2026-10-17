@@ -6,17 +6,18 @@
 #                  32 characters, for example
 #                  {"tenant-a":"<openssl rand -hex 32>"}
 #
+# Build the add-on manually from the repository root before starting Compose:
+#   docker build -t ai-logs-receiver:local services/ai-logs-receiver
+# Set AI_LOGS_RECEIVER_IMAGE to use your own registry image instead.
+#
 # The WAF sends its token as logging.log_forwarder.token, preferably through
 # WAF_LOG_FORWARDER_TOKEN or WAF_LOG_FORWARDER_TOKEN_FILE, and needs
 # global_settings.allow_insecure_service_urls: true to use the plain
 # http://ai-logs-receiver:8082/logs URL on a private network.
 services:
   ai-logs-receiver:
-    # Versioned images are published on Docker Hub only. Pin the digest of the
-    # release you deploy: synitio/ai-logs-receiver:1.0.0@sha256:<digest>
-    # To run the current source instead:
-    #   docker build -t ai-logs-receiver:local ../../services/ai-logs-receiver
-    image: synitio/ai-logs-receiver:1.0.0
+    # GitHub workflows do not build or publish this optional service.
+    image: "${AI_LOGS_RECEIVER_IMAGE:-ai-logs-receiver:local}"
     ports:
       - "${AI_LOGS_RECEIVER_PORT:-8082}:8082"
     environment:

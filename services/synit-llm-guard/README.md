@@ -128,16 +128,20 @@ Liveness is available at `/livez` and `/health`; readiness is available at `/rea
 
 ## Container
 
-Release images are published as `synitio/synit-llm-guard:<version>` on Docker Hub; they contain no model. Pin production deployments by digest. To build from source:
+**This optional service is not built or published as a container image by GitHub workflows. Build it yourself.** From the repository root, use the service directory as its Docker build context:
 
 ```bash
-docker build -t synit-llm-guard:local .
+docker build -t synit-llm-guard:local services/synit-llm-guard
 docker run --rm -p 127.0.0.1:5001:5001 \
   -e AUTH_TOKEN='replace-with-a-long-random-token' \
   -e MODEL_PATH=/models/model \
   -v /absolute/path/to/model:/models/model:ro \
   synit-llm-guard:local
 ```
+
+The Dockerfile builds a static binary with Hugot's pure-Go ONNX backend; no ONNX Runtime shared library is required. The image contains no model. Supply the [model directory](#model-directory) as a read-only mount readable by UID/GID `65532`, and set `INJECTION_LABELS` and `SAFE_LABELS` when the model's labels differ from the defaults. Startup fails for a missing or incompatible model or invalid label mapping.
+
+The [LLM Compose example](../../deploy/self-hosted/docker-compose-llm.yml) uses this local tag by default. For Kubernetes or another host, [tag and push the image to your own registry](../../docs/deployment_models.md#build-the-optional-services) and replace the example image reference. Set `LLM_GUARD_IMAGE` to use your registry image with Compose. Pin production deployments by digest.
 
 Keep port `5001` on a private network. Bearer authentication does not encrypt traffic; use TLS or a trusted workload network between separate hosts.
 

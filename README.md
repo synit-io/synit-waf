@@ -1,5 +1,7 @@
 # Synit WAF
 
+<img src="./assets/synit_waf_logo.png" alt="Synit WAF official mascot and logo" width="320">
+
 Synit WAF is a tenant-aware reverse proxy and web application firewall written in Go. One process can protect several hostnames, apply a different security policy to each tenant, and route allowed traffic to healthy upstreams.
 
 ![CI](https://github.com/synit-io/synit-waf/actions/workflows/ci.yml/badge.svg)

@@ -7,7 +7,7 @@ This guide builds Synit WAF, places it in front of a local test service, verifie
 - Docker Engine with the Compose plugin
 - Git
 - `curl`
-- Go 1.27.0 or newer only if running from source
+- Go 1.27.2 or newer only if running from source
 
 ## Fast verification
 

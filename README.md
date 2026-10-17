@@ -90,7 +90,7 @@ An allow-listed IP skips GeoIP, both rate limits, and request inspection (step 8
 - Git
 - `curl`
 
-Go 1.27.0 or newer is required only when building or running from source.
+Go 1.27.2 or newer is required only when building or running from source.
 
 ### Run the verified example
 
@@ -331,7 +331,7 @@ See [deployment models](./docs/deployment_models.md) for binary, container, Kube
 
 ## Development
 
-The project uses Go 1.27.0 and contains three Go modules: the WAF plus the two optional services.
+The project requires Go 1.27.2 or newer and contains three Go modules: the WAF plus the two optional services.
 
 ```bash
 make build            # bin/synit-waf

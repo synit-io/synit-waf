@@ -70,7 +70,7 @@ func newHugotClassifier(ctx context.Context, modelPath string, injectionLabels, 
 	if err != nil {
 		return nil, fmt.Errorf("create inference session: %w", err)
 	}
-	pipeline, err := hugot.NewPipeline(session, hugot.TextClassificationConfig{
+	pipeline, err := session.NewPipeline(hugot.TextClassificationConfig{
 		ModelPath: modelPath,
 		Name:      "prompt-injection",
 		Options:   []hugot.TextClassificationOption{pipelines.WithSoftmax(), pipelines.WithSingleLabel()},

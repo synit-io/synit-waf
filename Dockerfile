@@ -4,7 +4,7 @@
 # third_party/, LICENSE, and NOTICE; .dockerignore excludes the rest.
 
 # Stage 1: build a static binary (no cgo, so no C toolchain is needed).
-FROM golang:1.27.1-alpine@sha256:8a5910f31396cd4d89662f56c68b3ae31d374308270a1c3bd96672ee5ed43414 AS builder
+FROM golang:1.27.2-alpine@sha256:f92b6ef800e499660581efdabdf25d9d817a9d124eaf900924f0504e7e27e12d AS builder
 
 WORKDIR /src
 
@@ -27,7 +27,7 @@ RUN mkdir -p /staging/etc/waf/certs/acme /staging/etc/waf/geoip && \
     chown -R 65532:65532 /staging/etc/waf
 
 # Stage 2: distroless runtime.
-FROM gcr.io/distroless/static-debian12@sha256:d75cdd72874d4790092fcb1b058493ecf6bb5bf2b2b897045b00ff01d91843f2
+FROM gcr.io/distroless/static-debian13@sha256:58133991db06659feaabe0f4e97a35cebf15ef4ea08f8a4c6d2ee5f75e4aa6a0
 
 ARG VERSION=dev
 LABEL org.opencontainers.image.title="Synit WAF" \

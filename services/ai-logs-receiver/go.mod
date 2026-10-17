@@ -1,3 +1,3 @@
 module github.com/synit-io/synit-waf/services/ai-logs-receiver
 
-go 1.27.0
+go 1.27.2

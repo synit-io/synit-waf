@@ -95,7 +95,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/caddyserver/certmagic v0.25.4
+github.com/caddyserver/certmagic v0.25.6
 Used by: synit-waf
 
 --- LICENSE.txt (SHA-256: b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1) ---
@@ -303,7 +303,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/caddyserver/zerossl v0.1.5
+github.com/caddyserver/zerossl v0.1.6
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 177bd0ba184ff7345494f894bcdb6783d7dc5ba02c960de94dcd2ed4ba6dc44e) ---
@@ -387,7 +387,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/corazawaf/coraza/v3 v3.7.0
+github.com/corazawaf/coraza/v3 v3.8.1
 Used by: synit-waf
 
 --- LICENSE (SHA-256: a43abab7fef3fa61ee401e550ab693cb1df94ed58e0fdc4d722ae04202bbf0ff) ---
@@ -595,7 +595,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/corazawaf/libinjection-go v0.3.2
+github.com/corazawaf/libinjection-go v0.3.5
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 3296b49ab7f460064a220ce0c5b0ea698a9c82a3d72bec5f10d0e0529cce1023) ---
@@ -625,7 +625,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
-github.com/crowdsecurity/crowdsec v1.7.8
+github.com/crowdsecurity/crowdsec v1.8.1
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 198fa694dee3f87684bd26b9ae5227e07f016cc7a3ac187d0036afaf8d08d2da) ---
@@ -732,7 +732,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/ebitengine/purego v0.10.2
+github.com/ebitengine/purego v0.11.1
 Used by: synit-waf
 
 --- LICENSE (SHA-256: b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1) ---
@@ -940,6 +940,214 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
+github.com/eliben/go-sentencepiece v0.7.0
+Used by: synit-llm-guard
+
+--- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
+
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+--------------------------------------------------------------------------------
 github.com/fsnotify/fsnotify v1.10.1
 Used by: synit-waf
 
@@ -970,66 +1178,6 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
---------------------------------------------------------------------------------
-github.com/go-errors/errors v1.5.1
-Used by: synit-llm-guard
-
---- LICENSE.MIT (SHA-256: 4c1b2259f160d975ec6594b602be5db4e6c0c06afe312ca3cd7cff91b75c7c26) ---
-
-Copyright (c) 2015 Conrad Irwin <conrad@bugsnag.com>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
---------------------------------------------------------------------------------
-github.com/go-json-experiment/json v0.0.0-20260820222146-c27c302e5fc3
-Used by: synit-waf
-
---- AUTHORS (SHA-256: 5aa3167c44245f0b12b27195d85c6a8c8e067cfdd511059daa4d7b3c5b232129) ---
-
-# This source code refers to The Go Authors for copyright purposes.
-# The master list of authors is in the main Go distribution,
-# visible at https://tip.golang.org/AUTHORS.
-
---- CONTRIBUTORS (SHA-256: fa714cb1012a065fbe08b174eb1f5604327bd24d42dab2c461878ce36f68d0c9) ---
-
-# This source code was written by the Go contributors.
-# The master list of contributors is in the main Go distribution,
-# visible at https://tip.golang.org/CONTRIBUTORS.
-
---- LICENSE (SHA-256: 14a34c4db2d21bf9cf80d028b802cd22fed9bf597a6c2db7ce30ee6ffd04967a) ---
-
-Copyright (c) 2020 The Go Authors. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-   * Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above
-copyright notice, this list of conditions and the following disclaimer
-in the documentation and/or other materials provided with the
-distribution.
-   * Neither the name of Google Inc. nor the names of its
-contributors may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
 github.com/go-logr/logr v1.4.4
@@ -1268,10 +1416,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/analysis v0.26.0
+github.com/go-openapi/analysis v1.0.1
 Used by: synit-waf
 
---- CONTRIBUTORS.md (SHA-256: d006e3616af158fdc1be31a65dd998d52a6bd27d8c4ef31a7ff8cb6312c7a7d1) ---
+--- CONTRIBUTORS.md (SHA-256: 726fd424fcbd713a37c67c1b84834dc105a29fd6d92eef89a8d873972a1bd0b8) ---
 
 # Contributors
 
@@ -1279,32 +1427,33 @@ Used by: synit-waf
 
 | Total Contributors | Total Contributions |
 | --- | --- |
-| 22  | 276  |
+| 23  | 299  |
 
 | Username | All Time Contribution Count | All Commits |
 | --- | --- | --- |
-| @fredbi | 136 | <https://github.com/go-openapi/analysis/commits?author=fredbi> |
+| @fredbi | 150 | <https://github.com/go-openapi/analysis/commits?author=fredbi> |
 | @casualjim | 91 | <https://github.com/go-openapi/analysis/commits?author=casualjim> |
+| @amoudani | 9 | <https://github.com/go-openapi/analysis/commits?author=amoudani> |
 | @keramix | 9 | <https://github.com/go-openapi/analysis/commits?author=keramix> |
 | @youyuanwu | 8 | <https://github.com/go-openapi/analysis/commits?author=youyuanwu> |
 | @wjase | 7 | <https://github.com/go-openapi/analysis/commits?author=wjase> |
-| @kul-amr | 3 | <https://github.com/go-openapi/analysis/commits?author=kul-amr> |
-| @schafle | 3 | <https://github.com/go-openapi/analysis/commits?author=schafle> |
 | @msample | 3 | <https://github.com/go-openapi/analysis/commits?author=msample> |
-| @mbohlool | 2 | <https://github.com/go-openapi/analysis/commits?author=mbohlool> |
+| @schafle | 3 | <https://github.com/go-openapi/analysis/commits?author=schafle> |
+| @kul-amr | 3 | <https://github.com/go-openapi/analysis/commits?author=kul-amr> |
 | @zmay2030 | 2 | <https://github.com/go-openapi/analysis/commits?author=zmay2030> |
-| @ujjwalsh | 1 | <https://github.com/go-openapi/analysis/commits?author=ujjwalsh> |
-| @itengfei | 1 | <https://github.com/go-openapi/analysis/commits?author=itengfei> |
-| @nrnrk | 1 | <https://github.com/go-openapi/analysis/commits?author=nrnrk> |
-| @cuishuang | 1 | <https://github.com/go-openapi/analysis/commits?author=cuishuang> |
-| @tklauser | 1 | <https://github.com/go-openapi/analysis/commits?author=tklauser> |
-| @Shimizu1111 | 1 | <https://github.com/go-openapi/analysis/commits?author=Shimizu1111> |
-| @thaJeztah | 1 | <https://github.com/go-openapi/analysis/commits?author=thaJeztah> |
-| @knweiss | 1 | <https://github.com/go-openapi/analysis/commits?author=knweiss> |
-| @guillemj | 1 | <https://github.com/go-openapi/analysis/commits?author=guillemj> |
-| @gregmarr | 1 | <https://github.com/go-openapi/analysis/commits?author=gregmarr> |
-| @danielfbm | 1 | <https://github.com/go-openapi/analysis/commits?author=danielfbm> |
+| @mbohlool | 2 | <https://github.com/go-openapi/analysis/commits?author=mbohlool> |
 | @Copilot | 1 | <https://github.com/go-openapi/analysis/commits?author=Copilot> |
+| @danielfbm | 1 | <https://github.com/go-openapi/analysis/commits?author=danielfbm> |
+| @gregmarr | 1 | <https://github.com/go-openapi/analysis/commits?author=gregmarr> |
+| @guillemj | 1 | <https://github.com/go-openapi/analysis/commits?author=guillemj> |
+| @knweiss | 1 | <https://github.com/go-openapi/analysis/commits?author=knweiss> |
+| @thaJeztah | 1 | <https://github.com/go-openapi/analysis/commits?author=thaJeztah> |
+| @Shimizu1111 | 1 | <https://github.com/go-openapi/analysis/commits?author=Shimizu1111> |
+| @tklauser | 1 | <https://github.com/go-openapi/analysis/commits?author=tklauser> |
+| @cuishuang | 1 | <https://github.com/go-openapi/analysis/commits?author=cuishuang> |
+| @nrnrk | 1 | <https://github.com/go-openapi/analysis/commits?author=nrnrk> |
+| @itengfei | 1 | <https://github.com/go-openapi/analysis/commits?author=itengfei> |
+| @ujjwalsh | 1 | <https://github.com/go-openapi/analysis/commits?author=ujjwalsh> |
 
  _this file was generated by the [Contributors GitHub Action](https://github.com/github-community-projects/contributors)_
 
@@ -1514,10 +1663,10 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/errors v0.22.8
+github.com/go-openapi/errors v0.22.9
 Used by: synit-waf
 
---- CONTRIBUTORS.md (SHA-256: a1bbe425c2ed78d5ab18402ec7a7e7b0b471747a1d8f42090c278f42ca3860c1) ---
+--- CONTRIBUTORS.md (SHA-256: 59274c2e4ae43d2fb6c79567376af595a4c2a88a3a4f5d3a06b59ef3d2022f0a) ---
 
 # Contributors
 
@@ -1525,12 +1674,12 @@ Used by: synit-waf
 
 | Total Contributors | Total Contributions |
 | --- | --- |
-| 13  | 115  |
+| 13  | 121  |
 
 | Username | All Time Contribution Count | All Commits |
 | --- | --- | --- |
 | @casualjim | 58 | <https://github.com/go-openapi/errors/commits?author=casualjim> |
-| @fredbi | 41 | <https://github.com/go-openapi/errors/commits?author=fredbi> |
+| @fredbi | 47 | <https://github.com/go-openapi/errors/commits?author=fredbi> |
 | @youyuanwu | 5 | <https://github.com/go-openapi/errors/commits?author=youyuanwu> |
 | @alexandear | 2 | <https://github.com/go-openapi/errors/commits?author=alexandear> |
 | @fiorix | 1 | <https://github.com/go-openapi/errors/commits?author=fiorix> |
@@ -1751,10 +1900,10 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/jsonpointer v1.0.0
+github.com/go-openapi/jsonpointer v1.0.2
 Used by: synit-waf
 
---- CONTRIBUTORS.md (SHA-256: 4c8c5e585c107a9451af99d3cf1f60d98342dd053e551da72e84e2a7786a1c2b) ---
+--- CONTRIBUTORS.md (SHA-256: 57fee9b5fdf0ff56fab1b0e94db7714941e1850c6afd15ff3d6d2ef1a714649a) ---
 
 # Contributors
 
@@ -1762,11 +1911,11 @@ Used by: synit-waf
 
 | Total Contributors | Total Contributions |
 | --- | --- |
-| 13  | 132  |
+| 13  | 136  |
 
 | Username | All Time Contribution Count | All Commits |
 | --- | --- | --- |
-| @fredbi | 83 | <https://github.com/go-openapi/jsonpointer/commits?author=fredbi> |
+| @fredbi | 87 | <https://github.com/go-openapi/jsonpointer/commits?author=fredbi> |
 | @casualjim | 33 | <https://github.com/go-openapi/jsonpointer/commits?author=casualjim> |
 | @magodo | 3 | <https://github.com/go-openapi/jsonpointer/commits?author=magodo> |
 | @youyuanwu | 3 | <https://github.com/go-openapi/jsonpointer/commits?author=youyuanwu> |
@@ -2029,10 +2178,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/jsonreference v1.0.0
+github.com/go-openapi/jsonreference v1.0.3
 Used by: synit-waf
 
---- CONTRIBUTORS.md (SHA-256: 5062bd5a7af54c82d44833e70b10c2b197ba79dd68806a328a8509b756a790bd) ---
+--- CONTRIBUTORS.md (SHA-256: 615e6fded4d37989272458be6d6503972a76df749037c7641d36656510f1e8b1) ---
 
 # Contributors
 
@@ -2040,11 +2189,11 @@ Used by: synit-waf
 
 | Total Contributors | Total Contributions |
 | --- | --- |
-| 9  | 83  |
+| 9  | 90  |
 
 | Username | All Time Contribution Count | All Commits |
 | --- | --- | --- |
-| @fredbi | 46 | <https://github.com/go-openapi/jsonreference/commits?author=fredbi> |
+| @fredbi | 53 | <https://github.com/go-openapi/jsonreference/commits?author=fredbi> |
 | @casualjim | 25 | <https://github.com/go-openapi/jsonreference/commits?author=casualjim> |
 | @youyuanwu | 5 | <https://github.com/go-openapi/jsonreference/commits?author=youyuanwu> |
 | @olivierlemasle | 2 | <https://github.com/go-openapi/jsonreference/commits?author=olivierlemasle> |
@@ -2304,10 +2453,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/loads v0.25.1
+github.com/go-openapi/loads v0.25.3
 Used by: synit-waf
 
---- CONTRIBUTORS.md (SHA-256: ea094c77b66750e47881f49f87e5c9586bd1235f1d1a1f6988b2164805822a56) ---
+--- CONTRIBUTORS.md (SHA-256: e3e53ea50d13886b6ec4a535221f82cdaf5e5a91208ce67bcbb0fac0179f5682) ---
 
 # Contributors
 
@@ -2315,11 +2464,11 @@ Used by: synit-waf
 
 | Total Contributors | Total Contributions |
 | --- | --- |
-| 14  | 139  |
+| 14  | 148  |
 
 | Username | All Time Contribution Count | All Commits |
 | --- | --- | --- |
-| @fredbi | 61 | <https://github.com/go-openapi/loads/commits?author=fredbi> |
+| @fredbi | 70 | <https://github.com/go-openapi/loads/commits?author=fredbi> |
 | @casualjim | 48 | <https://github.com/go-openapi/loads/commits?author=casualjim> |
 | @youyuanwu | 6 | <https://github.com/go-openapi/loads/commits?author=youyuanwu> |
 | @vburenin | 4 | <https://github.com/go-openapi/loads/commits?author=vburenin> |
@@ -2542,10 +2691,10 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/spec v0.22.9
+github.com/go-openapi/spec v1.0.1
 Used by: synit-waf
 
---- CONTRIBUTORS.md (SHA-256: 7b14b7be245390a36b3f51844a3f4c57f5abaf13bd0660d094fffdb52664267b) ---
+--- CONTRIBUTORS.md (SHA-256: ddb9d6e3c4cd60f7f1291660a5474ff1bb305e3c3e2d2e102b94a5a54457e0b3) ---
 
 # Contributors
 
@@ -2553,12 +2702,12 @@ Used by: synit-waf
 
 | Total Contributors | Total Contributions |
 | --- | --- |
-| 38  | 403  |
+| 39  | 439  |
 
 | Username | All Time Contribution Count | All Commits |
 | --- | --- | --- |
 | @casualjim | 191 | <https://github.com/go-openapi/spec/commits?author=casualjim> |
-| @fredbi | 101 | <https://github.com/go-openapi/spec/commits?author=fredbi> |
+| @fredbi | 136 | <https://github.com/go-openapi/spec/commits?author=fredbi> |
 | @pytlesk4 | 26 | <https://github.com/go-openapi/spec/commits?author=pytlesk4> |
 | @kul-amr | 10 | <https://github.com/go-openapi/spec/commits?author=kul-amr> |
 | @keramix | 10 | <https://github.com/go-openapi/spec/commits?author=keramix> |
@@ -2595,6 +2744,7 @@ Used by: synit-waf
 | @sttts | 1 | <https://github.com/go-openapi/spec/commits?author=sttts> |
 | @ChandanChainani | 1 | <https://github.com/go-openapi/spec/commits?author=ChandanChainani> |
 | @bvwells | 1 | <https://github.com/go-openapi/spec/commits?author=bvwells> |
+| @amoudani | 1 | <https://github.com/go-openapi/spec/commits?author=amoudani> |
 
  _this file was generated by the [Contributors GitHub Action](https://github.com/github-community-projects/contributors)_
 
@@ -2804,10 +2954,10 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/strfmt v0.27.0
+github.com/go-openapi/strfmt v0.27.3
 Used by: synit-waf
 
---- CONTRIBUTORS.md (SHA-256: c7881ba679822ee89aaf4b264f1c6f96adaf491477789e85e51852bc0fb834ed) ---
+--- CONTRIBUTORS.md (SHA-256: 82cd8f7709a2af4d223c65bb06e1e72cea2284ee74421316ada9d0bd68411876) ---
 
 # Contributors
 
@@ -2815,12 +2965,12 @@ Used by: synit-waf
 
 | Total Contributors | Total Contributions |
 | --- | --- |
-| 41  | 243  |
+| 41  | 256  |
 
 | Username | All Time Contribution Count | All Commits |
 | --- | --- | --- |
 | @casualjim | 88 | <https://github.com/go-openapi/strfmt/commits?author=casualjim> |
-| @fredbi | 74 | <https://github.com/go-openapi/strfmt/commits?author=fredbi> |
+| @fredbi | 87 | <https://github.com/go-openapi/strfmt/commits?author=fredbi> |
 | @youyuanwu | 13 | <https://github.com/go-openapi/strfmt/commits?author=youyuanwu> |
 | @jlambatl | 9 | <https://github.com/go-openapi/strfmt/commits?author=jlambatl> |
 | @GlenDC | 5 | <https://github.com/go-openapi/strfmt/commits?author=GlenDC> |
@@ -3069,7 +3219,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/cmdutils v0.29.1
+github.com/go-openapi/swag/cmdutils v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -3278,7 +3428,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/conv v0.29.1
+github.com/go-openapi/swag/conv v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -3487,7 +3637,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/fileutils v0.29.1
+github.com/go-openapi/swag/fileutils v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -3696,7 +3846,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/jsonutils v0.29.1
+github.com/go-openapi/swag/jsonutils v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -3905,7 +4055,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/loading v0.29.1
+github.com/go-openapi/swag/loading v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -4114,7 +4264,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/mangling v0.29.1
+github.com/go-openapi/swag/mangling v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -4323,7 +4473,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/netutils v0.29.1
+github.com/go-openapi/swag/netutils v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -4532,7 +4682,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/pools v0.29.1
+github.com/go-openapi/swag/pools v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -4741,7 +4891,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/stringutils v0.29.1
+github.com/go-openapi/swag/stringutils v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -4950,7 +5100,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/typeutils v0.29.1
+github.com/go-openapi/swag/typeutils v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -5159,7 +5309,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag/yamlutils v0.29.1
+github.com/go-openapi/swag/yamlutils v0.29.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30) ---
@@ -5368,10 +5518,10 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/swag v0.29.1
+github.com/go-openapi/swag v0.29.2
 Used by: synit-waf
 
---- CONTRIBUTORS.md (SHA-256: a8be27e6c6ce84e93216010e42d7b991f1692ab801d65ab6e80fdcca45b7d760) ---
+--- CONTRIBUTORS.md (SHA-256: 28f73703aae33414ed0779f82bc80c9b6dbeef3571cddc564964d34473720797) ---
 
 # Contributors
 
@@ -5379,11 +5529,11 @@ Used by: synit-waf
 
 | Total Contributors | Total Contributions |
 | --- | --- |
-| 24  | 263  |
+| 24  | 272  |
 
 | Username | All Time Contribution Count | All Commits |
 | --- | --- | --- |
-| @fredbi | 133 | <https://github.com/go-openapi/swag/commits?author=fredbi> |
+| @fredbi | 142 | <https://github.com/go-openapi/swag/commits?author=fredbi> |
 | @casualjim | 98 | <https://github.com/go-openapi/swag/commits?author=casualjim> |
 | @alexandear | 4 | <https://github.com/go-openapi/swag/commits?author=alexandear> |
 | @orisano | 3 | <https://github.com/go-openapi/swag/commits?author=orisano> |
@@ -5616,10 +5766,10 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/validate v0.26.3
+github.com/go-openapi/validate v1.0.0
 Used by: synit-waf
 
---- CONTRIBUTORS.md (SHA-256: afb84cb347f859cc6e63712bf6634ae048bdaeb10531ed3e548769c9a49b00fb) ---
+--- CONTRIBUTORS.md (SHA-256: 9d8939bbcb44d979562269aa7cc81b9a8522f37d8a9ad149e8a3d134ae86fa31) ---
 
 # Contributors
 
@@ -5627,12 +5777,12 @@ Used by: synit-waf
 
 | Total Contributors | Total Contributions |
 | --- | --- |
-| 32  | 312  |
+| 32  | 351  |
 
 | Username | All Time Contribution Count | All Commits |
 | --- | --- | --- |
 | @casualjim | 169 | <https://github.com/go-openapi/validate/commits?author=casualjim> |
-| @fredbi | 74 | <https://github.com/go-openapi/validate/commits?author=fredbi> |
+| @fredbi | 113 | <https://github.com/go-openapi/validate/commits?author=fredbi> |
 | @sttts | 11 | <https://github.com/go-openapi/validate/commits?author=sttts> |
 | @youyuanwu | 9 | <https://github.com/go-openapi/validate/commits?author=youyuanwu> |
 | @keramix | 8 | <https://github.com/go-openapi/validate/commits?author=keramix> |
@@ -5928,7 +6078,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/gofrs/flock v0.13.0
+github.com/gofrs/flock v0.13.1
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: f4c7b0fbdba9660126feab6388ceed10ff744b2c772a63132f64f9ab2ee5fa29) ---
@@ -5993,7 +6143,215 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/compute v0.1.2
+github.com/gomlx/compute-onnx v0.1.13
+Used by: synit-llm-guard
+
+--- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
+
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+--------------------------------------------------------------------------------
+github.com/gomlx/compute v0.1.14
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -6409,7 +6767,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/go-huggingface v0.4.1
+github.com/gomlx/go-huggingface v0.4.15
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -6617,7 +6975,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/gomlx v0.28.2
+github.com/gomlx/gomlx v0.28.17
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -6825,7 +7183,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/onnx-gomlx v0.5.2
+github.com/gomlx/onnx-gomlx v0.5.14
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -7540,7 +7898,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/kaptinlin/jsonschema v0.9.8
+github.com/kaptinlin/jsonschema v0.9.10
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 69a46310648703f06f79920ab4be6931f1ce48832a730179a4ec282fa5ce4897) ---
@@ -7568,7 +7926,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/klauspost/cpuid/v2 v2.4.0
+github.com/klauspost/cpuid/v2 v2.4.1
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 52e4fc775654aae603e3bcef474e4c34b94d8e14577372b05e48f5a96ffb46d8) ---
@@ -7596,7 +7954,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/knights-analytics/hugot v0.7.7
+github.com/knights-analytics/hugot v0.8.3
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -7860,7 +8218,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/mholt/acmez/v3 v3.1.6
+github.com/mholt/acmez/v3 v3.1.7
 Used by: synit-waf
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -8384,7 +8742,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/oschwald/geoip2-golang/v2 v2.3.0
+github.com/oschwald/geoip2-golang/v2 v2.5.0
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cb89cb8d744d4890187eb3e98fa36f644adf2e56866faba0af891f55493ac522) ---
@@ -8406,7 +8764,7 @@ OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/oschwald/maxminddb-golang/v2 v2.5.0
+github.com/oschwald/maxminddb-golang/v2 v2.8.0
 Used by: synit-waf
 
 --- LICENSE (SHA-256: cb89cb8d744d4890187eb3e98fa36f644adf2e56866faba0af891f55493ac522) ---
@@ -8486,7 +8844,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
-github.com/prometheus/client_golang v1.24.1
+github.com/prometheus/client_golang v1.25.0
 Used by: synit-waf
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -8715,7 +9073,7 @@ Copyright 2010 The Go Authors
 See source code for license details.
 
 --------------------------------------------------------------------------------
-github.com/prometheus/client_model v0.6.2
+github.com/prometheus/client_model v0.6.3
 Used by: synit-waf
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -8931,7 +9289,7 @@ This product includes software developed at
 SoundCloud Ltd. (http://soundcloud.com/).
 
 --------------------------------------------------------------------------------
-github.com/prometheus/common v0.70.1
+github.com/prometheus/common v0.72.1
 Used by: synit-waf
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -9147,7 +9505,7 @@ This product includes software developed at
 SoundCloud Ltd. (http://soundcloud.com/).
 
 --------------------------------------------------------------------------------
-github.com/prometheus/procfs v0.21.1
+github.com/prometheus/procfs v0.22.0
 Used by: synit-waf
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -9365,7 +9723,7 @@ This product includes software developed at
 SoundCloud Ltd. (http://soundcloud.com/).
 
 --------------------------------------------------------------------------------
-github.com/shirou/gopsutil/v4 v4.26.7
+github.com/shirou/gopsutil/v4 v4.26.9
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 21c83efb2c5770a5c0bac0fb414ebb69e9c3738498bb4dba5b40ee075b6fc296) ---
@@ -9433,7 +9791,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
-github.com/sirupsen/logrus v1.10.1
+github.com/sirupsen/logrus v1.10.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 51a0c9ec7f8b7634181b8d4c03e5b5d204ac21d6e72f46c313973424664b2e6b) ---
@@ -9461,7 +9819,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/tidwall/gjson v1.19.0
+github.com/tidwall/gjson v1.20.0
 Used by: synit-waf
 
 --- LICENSE (SHA-256: be83ad53208d03a9fe08c7fac231cabf79422989ef5706bff217bd35104ebf07) ---
@@ -9515,7 +9873,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/tidwall/pretty v1.2.1
+github.com/tidwall/pretty v1.2.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 0ca70311227fe097c662dece3f359e3317fa7f9d41f8d29eb45fc5135e216139) ---
@@ -9786,221 +10144,36 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/viant/afs v1.30.0
-Used by: synit-llm-guard
+github.com/yosida95/uritemplate/v3 v3.0.2
+Used by: synit-waf
 
---- LICENSE.txt (SHA-256: 94007d1a831ceba7f0ad6b0ae653a5b32f37b4d74cbe137e1618367a0e338348) ---
+--- LICENSE (SHA-256: 0761aadfb1921103752869ee942d4a71bdd54494697684d4b13dc17ad9781191) ---
 
+Copyright (C) 2016, Kohei YOSHIDA <https://yosida95.com/>. All rights reserved.
 
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the copyright holder nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
 
-   1. Definitions.
-
-      "License" shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
-
-      "Licensor" shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
-
-      "Legal Entity" shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      "control" means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
-
-      "You" (or "Your") shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
-
-      "Source" form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
-
-      "Object" form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
-
-      "Work" shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
-
-      "Derivative Works" shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
-
-      "Contribution" shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, "submitted"
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as "Not a Contribution."
-
-      "Contributor" shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
-
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
-
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
-
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
-
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
-
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
-
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
-
-      (d) If the Work includes a "NOTICE" text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
-
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
-
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
-
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
-
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
-
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
-
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
-
-   END OF TERMS AND CONDITIONS
-
-   APPENDIX: How to apply the Apache License to your work.
-
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets "[]"
-      replaced with your own identifying information. (Don't include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same "printed page" as the copyright notice for easier
-      identification within third-party archives.
-
-   Copyright 2012-2016 Viant.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-
---- NOTICE.txt (SHA-256: bd2ac8760ccb8de56d71ae72d5d6a9322ed17e5623457534d00d782beb58972c) ---
-
-Viant, inc. Abstract File Storage (afs)
-Copyright 2012-2016 Viant
-
-This product includes software developed at
-Viant (http://viantinc.com/)
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
 github.com/yusufpapurcu/wmi v1.2.4
@@ -10313,184 +10486,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 --------------------------------------------------------------------------------
-golang.org/x/crypto v0.56.0
-Used by: synit-llm-guard, synit-waf
-
---- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
-
-Copyright 2009 The Go Authors.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-   * Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above
-copyright notice, this list of conditions and the following disclaimer
-in the documentation and/or other materials provided with the
-distribution.
-   * Neither the name of Google LLC nor the names of its
-contributors may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
---- PATENTS (SHA-256: 96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc) ---
-
-Additional IP Rights Grant (Patents)
-
-"This implementation" means the copyrightable works distributed by
-Google as part of the Go project.
-
-Google hereby grants to You a perpetual, worldwide, non-exclusive,
-no-charge, royalty-free, irrevocable (except as stated in this section)
-patent license to make, have made, use, offer to sell, sell, import,
-transfer and otherwise run, modify and propagate the contents of this
-implementation of Go, where such license applies only to those patent
-claims, both currently owned or controlled by Google and acquired in
-the future, licensable by Google that are necessarily infringed by this
-implementation of Go.  This grant does not include claims that would be
-infringed only as a consequence of further modification of this
-implementation.  If you or your agent or exclusive licensee institute or
-order or agree to the institution of patent litigation against any
-entity (including a cross-claim or counterclaim in a lawsuit) alleging
-that this implementation of Go or any code incorporated within this
-implementation of Go constitutes direct or contributory patent
-infringement, or inducement of patent infringement, then any patent
-rights granted to you under this License for this implementation of Go
-shall terminate as of the date such litigation is filed.
-
---------------------------------------------------------------------------------
-golang.org/x/exp v0.0.0-20260727155853-b88d891fe743
-Used by: synit-llm-guard
-
---- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
-
-Copyright 2009 The Go Authors.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-   * Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above
-copyright notice, this list of conditions and the following disclaimer
-in the documentation and/or other materials provided with the
-distribution.
-   * Neither the name of Google LLC nor the names of its
-contributors may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
---- PATENTS (SHA-256: 96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc) ---
-
-Additional IP Rights Grant (Patents)
-
-"This implementation" means the copyrightable works distributed by
-Google as part of the Go project.
-
-Google hereby grants to You a perpetual, worldwide, non-exclusive,
-no-charge, royalty-free, irrevocable (except as stated in this section)
-patent license to make, have made, use, offer to sell, sell, import,
-transfer and otherwise run, modify and propagate the contents of this
-implementation of Go, where such license applies only to those patent
-claims, both currently owned or controlled by Google and acquired in
-the future, licensable by Google that are necessarily infringed by this
-implementation of Go.  This grant does not include claims that would be
-infringed only as a consequence of further modification of this
-implementation.  If you or your agent or exclusive licensee institute or
-order or agree to the institution of patent litigation against any
-entity (including a cross-claim or counterclaim in a lawsuit) alleging
-that this implementation of Go or any code incorporated within this
-implementation of Go constitutes direct or contributory patent
-infringement, or inducement of patent infringement, then any patent
-rights granted to you under this License for this implementation of Go
-shall terminate as of the date such litigation is filed.
-
---------------------------------------------------------------------------------
-golang.org/x/image v0.45.0
-Used by: synit-llm-guard
-
---- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
-
-Copyright 2009 The Go Authors.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-   * Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above
-copyright notice, this list of conditions and the following disclaimer
-in the documentation and/or other materials provided with the
-distribution.
-   * Neither the name of Google LLC nor the names of its
-contributors may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
---- PATENTS (SHA-256: 96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc) ---
-
-Additional IP Rights Grant (Patents)
-
-"This implementation" means the copyrightable works distributed by
-Google as part of the Go project.
-
-Google hereby grants to You a perpetual, worldwide, non-exclusive,
-no-charge, royalty-free, irrevocable (except as stated in this section)
-patent license to make, have made, use, offer to sell, sell, import,
-transfer and otherwise run, modify and propagate the contents of this
-implementation of Go, where such license applies only to those patent
-claims, both currently owned or controlled by Google and acquired in
-the future, licensable by Google that are necessarily infringed by this
-implementation of Go.  This grant does not include claims that would be
-infringed only as a consequence of further modification of this
-implementation.  If you or your agent or exclusive licensee institute or
-order or agree to the institution of patent litigation against any
-entity (including a cross-claim or counterclaim in a lawsuit) alleging
-that this implementation of Go or any code incorporated within this
-implementation of Go constitutes direct or contributory patent
-infringement, or inducement of patent infringement, then any patent
-rights granted to you under this License for this implementation of Go
-shall terminate as of the date such litigation is filed.
-
---------------------------------------------------------------------------------
-golang.org/x/net v0.58.0
+golang.org/x/crypto v0.58.0
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
@@ -10549,8 +10545,8 @@ rights granted to you under this License for this implementation of Go
 shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
-golang.org/x/sync v0.22.0
-Used by: synit-llm-guard, synit-waf
+golang.org/x/exp v0.0.0-20261014143641-f0251eb4aa3e
+Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
 
@@ -10608,8 +10604,8 @@ rights granted to you under this License for this implementation of Go
 shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
-golang.org/x/sys v0.47.0
-Used by: synit-llm-guard, synit-waf
+golang.org/x/image v0.47.0
+Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
 
@@ -10667,66 +10663,7 @@ rights granted to you under this License for this implementation of Go
 shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
-golang.org/x/text v0.41.0
-Used by: synit-llm-guard, synit-waf
-
---- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
-
-Copyright 2009 The Go Authors.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-   * Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above
-copyright notice, this list of conditions and the following disclaimer
-in the documentation and/or other materials provided with the
-distribution.
-   * Neither the name of Google LLC nor the names of its
-contributors may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
---- PATENTS (SHA-256: 96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc) ---
-
-Additional IP Rights Grant (Patents)
-
-"This implementation" means the copyrightable works distributed by
-Google as part of the Go project.
-
-Google hereby grants to You a perpetual, worldwide, non-exclusive,
-no-charge, royalty-free, irrevocable (except as stated in this section)
-patent license to make, have made, use, offer to sell, sell, import,
-transfer and otherwise run, modify and propagate the contents of this
-implementation of Go, where such license applies only to those patent
-claims, both currently owned or controlled by Google and acquired in
-the future, licensable by Google that are necessarily infringed by this
-implementation of Go.  This grant does not include claims that would be
-infringed only as a consequence of further modification of this
-implementation.  If you or your agent or exclusive licensee institute or
-order or agree to the institution of patent litigation against any
-entity (including a cross-claim or counterclaim in a lawsuit) alleging
-that this implementation of Go or any code incorporated within this
-implementation of Go constitutes direct or contributory patent
-infringement, or inducement of patent infringement, then any patent
-rights granted to you under this License for this implementation of Go
-shall terminate as of the date such litigation is filed.
-
---------------------------------------------------------------------------------
-golang.org/x/time v0.15.0
+golang.org/x/net v0.61.0
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
@@ -10785,12 +10722,12 @@ rights granted to you under this License for this implementation of Go
 shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
-google.golang.org/protobuf v1.36.11
-Used by: synit-llm-guard
+golang.org/x/sync v0.24.0
+Used by: synit-llm-guard, synit-waf
 
---- LICENSE (SHA-256: 4835612df0098ca95f8e7d9e3bffcb02358d435dbb38057c844c99d7f725eb20) ---
+--- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
 
-Copyright (c) 2018 The Go Authors. All rights reserved.
+Copyright 2009 The Go Authors.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -10802,7 +10739,184 @@ notice, this list of conditions and the following disclaimer.
 copyright notice, this list of conditions and the following disclaimer
 in the documentation and/or other materials provided with the
 distribution.
-   * Neither the name of Google Inc. nor the names of its
+   * Neither the name of Google LLC nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+--- PATENTS (SHA-256: 96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc) ---
+
+Additional IP Rights Grant (Patents)
+
+"This implementation" means the copyrightable works distributed by
+Google as part of the Go project.
+
+Google hereby grants to You a perpetual, worldwide, non-exclusive,
+no-charge, royalty-free, irrevocable (except as stated in this section)
+patent license to make, have made, use, offer to sell, sell, import,
+transfer and otherwise run, modify and propagate the contents of this
+implementation of Go, where such license applies only to those patent
+claims, both currently owned or controlled by Google and acquired in
+the future, licensable by Google that are necessarily infringed by this
+implementation of Go.  This grant does not include claims that would be
+infringed only as a consequence of further modification of this
+implementation.  If you or your agent or exclusive licensee institute or
+order or agree to the institution of patent litigation against any
+entity (including a cross-claim or counterclaim in a lawsuit) alleging
+that this implementation of Go or any code incorporated within this
+implementation of Go constitutes direct or contributory patent
+infringement, or inducement of patent infringement, then any patent
+rights granted to you under this License for this implementation of Go
+shall terminate as of the date such litigation is filed.
+
+--------------------------------------------------------------------------------
+golang.org/x/sys v0.49.0
+Used by: synit-llm-guard, synit-waf
+
+--- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
+
+Copyright 2009 The Go Authors.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+   * Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+   * Neither the name of Google LLC nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+--- PATENTS (SHA-256: 96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc) ---
+
+Additional IP Rights Grant (Patents)
+
+"This implementation" means the copyrightable works distributed by
+Google as part of the Go project.
+
+Google hereby grants to You a perpetual, worldwide, non-exclusive,
+no-charge, royalty-free, irrevocable (except as stated in this section)
+patent license to make, have made, use, offer to sell, sell, import,
+transfer and otherwise run, modify and propagate the contents of this
+implementation of Go, where such license applies only to those patent
+claims, both currently owned or controlled by Google and acquired in
+the future, licensable by Google that are necessarily infringed by this
+implementation of Go.  This grant does not include claims that would be
+infringed only as a consequence of further modification of this
+implementation.  If you or your agent or exclusive licensee institute or
+order or agree to the institution of patent litigation against any
+entity (including a cross-claim or counterclaim in a lawsuit) alleging
+that this implementation of Go or any code incorporated within this
+implementation of Go constitutes direct or contributory patent
+infringement, or inducement of patent infringement, then any patent
+rights granted to you under this License for this implementation of Go
+shall terminate as of the date such litigation is filed.
+
+--------------------------------------------------------------------------------
+golang.org/x/text v0.43.0
+Used by: synit-llm-guard, synit-waf
+
+--- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
+
+Copyright 2009 The Go Authors.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+   * Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+   * Neither the name of Google LLC nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+--- PATENTS (SHA-256: 96f408bfae65bf137fc2525d3ecb030271c50c1e90799f87abf8846d8dd505cc) ---
+
+Additional IP Rights Grant (Patents)
+
+"This implementation" means the copyrightable works distributed by
+Google as part of the Go project.
+
+Google hereby grants to You a perpetual, worldwide, non-exclusive,
+no-charge, royalty-free, irrevocable (except as stated in this section)
+patent license to make, have made, use, offer to sell, sell, import,
+transfer and otherwise run, modify and propagate the contents of this
+implementation of Go, where such license applies only to those patent
+claims, both currently owned or controlled by Google and acquired in
+the future, licensable by Google that are necessarily infringed by this
+implementation of Go.  This grant does not include claims that would be
+infringed only as a consequence of further modification of this
+implementation.  If you or your agent or exclusive licensee institute or
+order or agree to the institution of patent litigation against any
+entity (including a cross-claim or counterclaim in a lawsuit) alleging
+that this implementation of Go or any code incorporated within this
+implementation of Go constitutes direct or contributory patent
+infringement, or inducement of patent infringement, then any patent
+rights granted to you under this License for this implementation of Go
+shall terminate as of the date such litigation is filed.
+
+--------------------------------------------------------------------------------
+golang.org/x/time v0.16.0
+Used by: synit-waf
+
+--- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
+
+Copyright 2009 The Go Authors.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+   * Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+   * Neither the name of Google LLC nor the names of its
 contributors may be used to endorse or promote products derived from
 this software without specific prior written permission.
 
@@ -10845,7 +10959,7 @@ shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
 google.golang.org/protobuf v1.36.12
-Used by: synit-waf
+Used by: synit-llm-guard, synit-waf
 
 --- LICENSE (SHA-256: 4835612df0098ca95f8e7d9e3bffcb02358d435dbb38057c844c99d7f725eb20) ---
 

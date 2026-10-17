@@ -222,10 +222,20 @@ Rule IDs `440000`-`440099` are reserved for directives that Synit WAF generates.
 |---|---|
 | `440000` | `SecAction` that sets the paranoia variables from `paranoia_level` |
 | `440001` | Denies a request with `403` when Coraza could not parse the request body (`REQBODY_ERROR`) |
+| `440002` | Denies a request with `403` when query or path arguments exceed Coraza's inspection limit (phase 1) |
+| `440003` | Denies a request with `403` when body arguments exceed Coraza's inspection limit (phase 2) |
+| `440004` | Denies a request with `403` when Coraza cannot parse its URI (`URI_PARSE_ERROR`) |
+| `440005` | Denies a request with `403` when multipart body validation fails (`MULTIPART_STRICT_ERROR`) |
 | `440010` | Selects the JSON body processor for `application/json` requests (part of `llm-protection`) |
 | `440011` | Skips the `llm-protection` detection rules for requests outside `inspect_paths` |
 | `440012` | Instruction-override and known jailbreak phrases |
 | `440013` | System-prompt extraction phrases |
+
+### Coraza 3.8 upgrade
+
+Coraza 3.8.1 fixes security issues and limits inspected arguments to 1,000 per source by default. The limit now also applies to URL-encoded and JSON request bodies. Synit WAF rejects requests that exceed this limit with `403`, rather than forwarding arguments Coraza did not inspect. Invalid URIs and multipart validation failures also return `403`. In `audit_mode`, these rules log detections and allow requests through.
+
+Before upgrading, test APIs that send large argument lists or multipart uploads. If a tenant legitimately needs more arguments, set a higher `SecArgumentsLimit` in its `security.custom_rules` or an included rule set, for example `SecArgumentsLimit 2000`. Keep the built-in rejection rules enabled. See the [Coraza 3.8.1 release notes](https://github.com/corazawaf/coraza/releases/tag/v3.8.1) for parser changes.
 
 ### Built-in `llm-protection` rule set
 

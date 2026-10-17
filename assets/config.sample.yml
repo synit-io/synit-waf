@@ -85,6 +85,8 @@ geoip:
 # Reusable rule profiles.
 # No OWASP Core Rule Set is bundled. Rule IDs 440000-440099 are reserved for
 # Synit WAF built-ins; do not use them in your own rules.
+# Built-ins reject parsing errors and more than 1000 arguments per source with
+# 403 (audit_mode only logs). Raise SecArgumentsLimit in custom_rules if needed.
 waf_rule_sets:
   "base-protection": |
     SecRule REQUEST_METHOD "@rx (?i:^(trace|track)$)" "id:110001,phase:1,deny,status:403,log,msg:'Blocked unsafe HTTP method'"

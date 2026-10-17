@@ -46,6 +46,15 @@ const (
 	minDevBypassSecretBytes            = 32
 )
 
+// Coraza sets these flags instead of inspecting truncated or malformed input.
+// Check both argument phases because body parsing can reach the limit later.
+const requestInspectionRules = `
+SecRule ARGUMENTS_LIMIT_REACHED "@eq 1" "id:440002,phase:1,t:none,deny,status:403,log,msg:'Request argument limit reached'"
+SecRule ARGUMENTS_LIMIT_REACHED "@eq 1" "id:440003,phase:2,t:none,deny,status:403,log,msg:'Request argument limit reached'"
+SecRule URI_PARSE_ERROR "@eq 1" "id:440004,phase:1,t:none,deny,status:403,log,msg:'Request URI parsing failed'"
+SecRule MULTIPART_STRICT_ERROR "!@eq 0" "id:440005,phase:2,t:none,deny,status:403,log,msg:'Multipart request body validation failed'"
+`
+
 // BasicAuthCredentials holds a single user/password pair.
 type BasicAuthCredentials struct {
 	User     string `yaml:"user"`
@@ -764,6 +773,7 @@ func tenantDirectives(cfg AppConfig, tenant Tenant) string {
 	}
 	directives.WriteString(requestBodyErrorRule)
 	directives.WriteString("\n")
+	directives.WriteString(requestInspectionRules)
 
 	// Audit Mode / Detection Only (Placed after rule sets to ensure it overrides any internal SecRuleEngine directives)
 	if tenant.Security.AuditMode {

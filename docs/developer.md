@@ -218,7 +218,7 @@ git push origin v1.0.0
 A tag with a pre-release suffix (`v1.1.0-rc.1`) is published as a pre-release. The workflow:
 
 - verifies formatting, modules, tests, `govulncheck`, and the third-party notices on the tagged commit;
-- builds only the main `synit-waf` image for `linux/amd64` and `linux/arm64` with SBOM and provenance attestations, and pushes it to Docker Hub as `synitio/synit-waf:X.Y.Z`. A stable release also receives the floating tags `X.Y`, `X`, and `latest` when it is the newest release of that line; a pre-release only gets its exact version. `ghcr.io/synit-io/synit-waf:latest` is updated only for the newest stable release, and older GHCR versions are pruned. Docker Hub needs the repository secrets `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`;
+- builds only the main `synit-waf` image for `linux/amd64` and `linux/arm64` with SBOM and provenance attestations, and publishes it exclusively to Docker Hub as `synitio/synit-waf:X.Y.Z`. A stable release also receives the floating tags `X.Y`, `X`, and `latest` when it is the newest release of that line; a pre-release only gets its exact version. Docker Hub needs the repository secrets `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`;
 - builds `synit-waf` binaries for Linux (amd64, arm64, 386, armv7), macOS (amd64, arm64), and Windows (amd64, arm64, 386);
 - publishes a GitHub Release whose notes are the grouped commit list plus the image references, together with the binaries, `THIRD_PARTY_NOTICES.txt`, `manifest.json`, `SHA256SUMS`, and a build provenance attestation for the checksums.
 

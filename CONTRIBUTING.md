@@ -61,7 +61,7 @@ fix(waf): run phase 2 rules for requests without a body
 feat(config): add health_check.path for HTTP upstream checks
 feat(waf)!: rename response_buffer_limit to request_body_limit
 security(guard): score every chunk of a long text
-docs: describe the two container registries
+docs: describe docker hub image tags
 ```
 
 Types: `security`, `feat`, `fix`, `perf`, `refactor`, `docs`, `build`, `ci`, `test`, `revert`, `chore`. Scopes are optional (`waf`, `guard`, `receiver`, `deploy`, `e2e`, `thirdparty`, `config`, `docs`). A change that removes or renames configuration, changes a default, or changes a response code gets `!` and a `BREAKING CHANGE:` footer with the migration step. Use the `security` type for vulnerability fixes; they are listed first in the release notes. Keep one logical change per commit; `AGENTS.md` has the full rules. Preview the notes for a range with:

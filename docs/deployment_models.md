@@ -17,7 +17,7 @@ Point liveness, startup, and readiness probes at the admin listener. Keep it on 
 
 **GitHub workflows build and publish only the main `synit-waf` image. Operators must build the optional LLM guard and AI Logs Receiver themselves; no add-on release images are published.**
 
-WAF release images are published to Docker Hub as `synitio/synit-waf` with the tags `1.0.0`, `1.0`, `1`, and `latest` (no `v` prefix). Versioned tags exist only there. `ghcr.io/synit-io/synit-waf` carries only the `latest` tag of the newest stable release. Before production, append the digest of the release you deploy (`synitio/synit-waf:1.0.0@sha256:<digest>`) so a moved tag cannot change what runs.
+WAF release images are published only to Docker Hub as `synitio/synit-waf` with the tags `1.0.0`, `1.0`, `1`, and `latest` (no `v` prefix). Before production, append the digest of the release you deploy (`synitio/synit-waf:1.0.0@sha256:<digest>`) so a moved tag cannot change what runs.
 
 The WAF image is distroless and runs as UID `65532`. The binary is `/usr/local/bin/synit-waf`; `LICENSE`, `NOTICE`, and the third-party notices are under `/usr/share/doc/synit-waf/`. The image contains the example rule profiles under `/etc/waf/rules/profiles/` and empty `/etc/waf/certs/acme` and `/etc/waf/geoip` directories owned by the runtime user. It has no shell and no HTTP client, so container-level health checks must come from the platform (Kubernetes `httpGet` probes, a load balancer, or an external monitor), not from a command inside the container.
 

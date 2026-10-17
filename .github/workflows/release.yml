@@ -21,10 +21,8 @@ env:
   # Minor version only: setup-go with check-latest resolves it to the newest
   # 1.27.x patch release, so CI always tests with the current toolchain.
   GO_VERSION: "1.27"
-  # Versioned, immutable image tags live on Docker Hub. GHCR carries only the
-  # "latest" tag of the newest stable release and is pruned after each release.
+  # Container images are published only to Docker Hub.
   DOCKERHUB_NAMESPACE: synitio
-  GHCR_REGISTRY: ghcr.io
 
 jobs:
   verify:
@@ -37,7 +35,6 @@ jobs:
       prerelease: ${{ steps.release.outputs.prerelease }}
       commit: ${{ steps.source.outputs.commit }}
       image_tags: ${{ steps.floating.outputs.image_tags }}
-      is_latest: ${{ steps.floating.outputs.is_latest }}
     steps:
       - name: Resolve release tag
         id: release
@@ -82,7 +79,6 @@ jobs:
           # moves forward: a patch for an older line must not overwrite it.
           version="${TAG#v}"
           tags="$version"
-          is_latest=false
           if [ "$PRERELEASE" = "false" ]; then
             stable=$(git tag -l 'v*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V)
             major="${version%%.*}"
@@ -94,12 +90,10 @@ jobs:
             [ "$highest_major" = "$TAG" ] && tags="$tags $major"
             if [ "$highest" = "$TAG" ]; then
               tags="$tags latest"
-              is_latest=true
             fi
           fi
-          echo "Image tags: $tags (latest=$is_latest)"
+          echo "Image tags: $tags"
           printf 'image_tags=%s\n' "$tags" >> "$GITHUB_OUTPUT"
-          printf 'is_latest=%s\n' "$is_latest" >> "$GITHUB_OUTPUT"
       - name: Setup Go
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
@@ -122,9 +116,6 @@ jobs:
   publish-container:
     name: Build & Publish WAF Container
     needs: verify
-    permissions:
-      contents: read
-      packages: write
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -153,19 +144,11 @@ jobs:
           fi
           printf '%s' "$DOCKERHUB_TOKEN" | docker login docker.io -u "$DOCKERHUB_USERNAME" --password-stdin
 
-      - name: Log in to GHCR
-        if: needs.verify.outputs.is_latest == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: printf '%s' "$GITHUB_TOKEN" | docker login "$GHCR_REGISTRY" -u "${{ github.actor }}" --password-stdin
-
       - name: Build and publish multi-arch image
         env:
-          OWNER: ${{ github.repository_owner }}
           TAG: ${{ needs.verify.outputs.tag }}
           VERSION: ${{ needs.verify.outputs.version }}
           IMAGE_TAGS: ${{ needs.verify.outputs.image_tags }}
-          IS_LATEST: ${{ needs.verify.outputs.is_latest }}
           COMMIT: ${{ needs.verify.outputs.commit }}
         run: |
           hub_image="docker.io/$DOCKERHUB_NAMESPACE/synit-waf"
@@ -173,10 +156,6 @@ jobs:
           for image_tag in $IMAGE_TAGS; do
             tags+=(--tag "$hub_image:$image_tag")
           done
-          # GHCR receives only "latest", and only from the newest stable release.
-          if [ "$IS_LATEST" = "true" ]; then
-            tags+=(--tag "$GHCR_REGISTRY/$OWNER/synit-waf:latest")
-          fi
 
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
@@ -192,34 +171,6 @@ jobs:
             "${tags[@]}" \
             --push \
             .
-
-      - name: Prune GHCR to the latest release
-        # GHCR keeps only the manifests that "latest" references. Everything
-        # else (older tags, their per-platform manifests, attestations) is
-        # deleted. Requires the package to grant this repository admin access,
-        # which GHCR sets when the workflow publishes the package.
-        if: needs.verify.outputs.is_latest == 'true'
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OWNER: ${{ github.repository_owner }}
-        run: |
-          image="$GHCR_REGISTRY/$OWNER/synit-waf:latest"
-          index_digest=$(docker buildx imagetools inspect "$image" --format '{{.Manifest.Digest}}')
-          children=$(docker buildx imagetools inspect "$image" --raw | jq -r '.manifests[].digest')
-          keep=$(printf '%s\n%s\n' "$index_digest" "$children")
-          if [ "$(gh api "/users/$OWNER" --jq .type)" = "Organization" ]; then
-            api="/orgs/$OWNER/packages/container/synit-waf/versions"
-          else
-            api="/user/packages/container/synit-waf/versions"
-          fi
-          gh api --paginate "$api" --jq '.[] | "\(.id) \(.name)"' | while read -r id digest; do
-            if printf '%s\n' "$keep" | grep -qx "$digest"; then
-              continue
-            fi
-            echo "Deleting GHCR version $id ($digest)"
-            gh api --method DELETE "$api/$id" >/dev/null || echo "::warning::could not delete $id"
-          done
 
   publish-binaries:
     name: Build Binaries
@@ -310,7 +261,6 @@ jobs:
             echo "## Container images"
             echo
             echo "- Docker Hub: \`$DOCKERHUB_NAMESPACE/synit-waf:$VERSION\`"
-            echo "- GHCR: \`ghcr.io/${{ github.repository_owner }}/synit-waf:latest\`, updated only for the newest stable release"
             echo
             echo "The optional LLM guard and log receiver require [operator builds](https://github.com/${{ github.repository }}/blob/$TAG/docs/deployment_models.md#build-the-optional-services)."
           } > release-notes.md

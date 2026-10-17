@@ -200,14 +200,13 @@ Self-hosted Compose, Kubernetes, and Docker Swarm templates are available under 
 
 ## Container images
 
-**GitHub workflows build and publish only the main `synit-waf` image. The optional LLM guard and AI Logs Receiver must be built by operators; no release images are published for these add-ons.**
+**GitHub workflows build and publish only the main `synit-waf` image to Docker Hub. The optional LLM guard and AI Logs Receiver must be built by operators; no release images are published for these add-ons.**
 
 | Registry | Images | Tags |
 |---|---|---|
 | Docker Hub | `synitio/synit-waf` | `1.0.0`, `1.0`, `1`, `latest` (no `v` prefix) |
-| GitHub Container Registry | `ghcr.io/synit-io/synit-waf` | `latest` only |
 
-Versioned tags exist only on Docker Hub. GHCR carries the `latest` tag of the newest stable release, and older GHCR versions are pruned. Use Docker Hub for anything that must be reproducible:
+Images are published only to Docker Hub. To pull a versioned release:
 
 ```bash
 docker pull synitio/synit-waf:1.0.0

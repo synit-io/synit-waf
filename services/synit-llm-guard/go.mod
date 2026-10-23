@@ -1,6 +1,6 @@
 module github.com/synit-io/synit-waf/services/synit-llm-guard
 
-go 1.27.2
+go 1.27.3
 
 require github.com/knights-analytics/hugot v0.8.3
 

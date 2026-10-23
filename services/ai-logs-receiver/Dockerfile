@@ -1,11 +1,11 @@
-FROM golang:1.27.2-alpine@sha256:f92b6ef800e499660581efdabdf25d9d817a9d124eaf900924f0504e7e27e12d AS builder
+FROM golang:1.27.3-alpine@sha256:b8c9b82affbbb82a020bbcf998dad2ba9516944ac7e883524642a481a9505e9c AS builder
 WORKDIR /app
 COPY go.mod ./
 COPY . .
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-w -s" -o ai-logs-receiver .
 RUN mkdir -p /staging/data/ai-logs && chown -R 65532:65532 /staging/data
 
-FROM gcr.io/distroless/static-debian13@sha256:58133991db06659feaabe0f4e97a35cebf15ef4ea08f8a4c6d2ee5f75e4aa6a0
+FROM gcr.io/distroless/static-debian13@sha256:034df5c1737e8241f6ed6423a12e720ee0f6d6f088609ee172f98f6f2166ef5d
 WORKDIR /app
 COPY --from=builder /app/ai-logs-receiver /usr/local/bin/ai-logs-receiver
 COPY --from=builder --chown=65532:65532 /staging/data /data

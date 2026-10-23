@@ -6,7 +6,7 @@ For runtime setup and policy details, see the [onboarding guide](./onboarding.md
 
 ## Prerequisites
 
-- Go 1.27.2 or newer; all three modules declare `go 1.27.2`. CI resolves the newest 1.27.x patch release; the Dockerfiles pin their Go builder version and supported Distroless Debian 13 runtime digest.
+- Go 1.27.3 or newer; all three modules declare `go 1.27.3`. CI resolves the newest 1.27.x patch release; the Dockerfiles pin their Go builder version and supported Distroless Debian 13 runtime digest.
 - Git
 - Docker with the Compose plugin for the container image and the Docker end-to-end test
 - `curl` for manual HTTP checks

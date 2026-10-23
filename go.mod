@@ -1,6 +1,6 @@
 module github.com/synit-io/synit-waf
 
-go 1.27.2
+go 1.27.3
 
 require (
 	github.com/caddyserver/certmagic v0.25.6
@@ -30,7 +30,7 @@ require (
 	github.com/crowdsecurity/crowdsec v1.8.1 // indirect
 	github.com/crowdsecurity/go-cs-lib v0.0.25 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/ebitengine/purego v0.11.1 // indirect
+	github.com/ebitengine/purego v0.11.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/go-openapi/analysis v1.0.1 // indirect
 	github.com/go-openapi/errors v0.22.9 // indirect
@@ -38,7 +38,7 @@ require (
 	github.com/go-openapi/jsonreference v1.0.3 // indirect
 	github.com/go-openapi/loads v0.25.3 // indirect
 	github.com/go-openapi/spec v1.0.1 // indirect
-	github.com/go-openapi/strfmt v0.27.3 // indirect
+	github.com/go-openapi/strfmt v0.27.4 // indirect
 	github.com/go-openapi/swag v0.29.2 // indirect
 	github.com/go-openapi/swag/cmdutils v0.29.2 // indirect
 	github.com/go-openapi/swag/conv v0.29.2 // indirect
@@ -51,7 +51,7 @@ require (
 	github.com/go-openapi/swag/stringutils v0.29.2 // indirect
 	github.com/go-openapi/swag/typeutils v0.29.2 // indirect
 	github.com/go-openapi/swag/yamlutils v0.29.2 // indirect
-	github.com/go-openapi/validate v1.0.0 // indirect
+	github.com/go-openapi/validate v1.0.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
 	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect

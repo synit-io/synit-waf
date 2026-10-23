@@ -37,7 +37,7 @@
       ]
     }
   ],
-  "notice_sha256": "73fab66732a659859a1717142ecb48ffb7eae314f20cf2ce111e9f482a574cfd",
+  "notice_sha256": "c2f0953ed6a2dfd97878b31dd7962737051707f348a0601de36b44750b23f4a0",
   "dependencies": [
     {
       "path": "go.dev/toolchain",
@@ -215,7 +215,7 @@
     },
     {
       "path": "github.com/ebitengine/purego",
-      "version": "v0.11.1",
+      "version": "v0.11.2",
       "license": "Apache-2.0",
       "used_by": [
         "synit-waf"
@@ -401,7 +401,7 @@
     },
     {
       "path": "github.com/go-openapi/strfmt",
-      "version": "v0.27.3",
+      "version": "v0.27.4",
       "license": "Apache-2.0",
       "used_by": [
         "synit-waf"
@@ -591,7 +591,7 @@
     },
     {
       "path": "github.com/go-openapi/validate",
-      "version": "v1.0.0",
+      "version": "v1.0.1",
       "license": "Apache-2.0",
       "used_by": [
         "synit-waf"
@@ -599,7 +599,7 @@
       "license_files": [
         {
           "name": "CONTRIBUTORS.md",
-          "sha256": "9d8939bbcb44d979562269aa7cc81b9a8522f37d8a9ad149e8a3d134ae86fa31"
+          "sha256": "e737d56bf57df220282ed4155946e988c8da5fee2f6b1e7e4a6ce9192ddb66e5"
         },
         {
           "name": "LICENSE",

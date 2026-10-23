@@ -11,7 +11,7 @@ Thank you for improving Synit WAF. This document describes how to set up a devel
 
 ## Set up a development environment
 
-Requirements: Go 1.27.2 or newer, Git, Docker with the Compose plugin, `curl`, `golangci-lint` v2, and `python3`. See the [developer guide](docs/developer.md) for details.
+Requirements: Go 1.27.3 or newer, Git, Docker with the Compose plugin, `curl`, `golangci-lint` v2, and `python3`. See the [developer guide](docs/developer.md) for details.
 
 ```bash
 git clone https://github.com/synit-io/synit-waf.git

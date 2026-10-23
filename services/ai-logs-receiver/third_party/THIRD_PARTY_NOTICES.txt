@@ -732,7 +732,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/ebitengine/purego v0.11.1
+github.com/ebitengine/purego v0.11.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1) ---
@@ -2954,7 +2954,7 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/strfmt v0.27.3
+github.com/go-openapi/strfmt v0.27.4
 Used by: synit-waf
 
 --- CONTRIBUTORS.md (SHA-256: 82cd8f7709a2af4d223c65bb06e1e72cea2284ee74421316ada9d0bd68411876) ---
@@ -5766,10 +5766,10 @@ Used by: synit-waf
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/go-openapi/validate v1.0.0
+github.com/go-openapi/validate v1.0.1
 Used by: synit-waf
 
---- CONTRIBUTORS.md (SHA-256: 9d8939bbcb44d979562269aa7cc81b9a8522f37d8a9ad149e8a3d134ae86fa31) ---
+--- CONTRIBUTORS.md (SHA-256: e737d56bf57df220282ed4155946e988c8da5fee2f6b1e7e4a6ce9192ddb66e5) ---
 
 # Contributors
 
@@ -5777,12 +5777,12 @@ Used by: synit-waf
 
 | Total Contributors | Total Contributions |
 | --- | --- |
-| 32  | 351  |
+| 32  | 352  |
 
 | Username | All Time Contribution Count | All Commits |
 | --- | --- | --- |
 | @casualjim | 169 | <https://github.com/go-openapi/validate/commits?author=casualjim> |
-| @fredbi | 113 | <https://github.com/go-openapi/validate/commits?author=fredbi> |
+| @fredbi | 114 | <https://github.com/go-openapi/validate/commits?author=fredbi> |
 | @sttts | 11 | <https://github.com/go-openapi/validate/commits?author=sttts> |
 | @youyuanwu | 9 | <https://github.com/go-openapi/validate/commits?author=youyuanwu> |
 | @keramix | 8 | <https://github.com/go-openapi/validate/commits?author=keramix> |

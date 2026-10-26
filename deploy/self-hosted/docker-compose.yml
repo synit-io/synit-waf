@@ -14,7 +14,7 @@ services:
   synit-waf:
     # Versioned images are published on Docker Hub only. Pin the digest of the
     # release you deploy: synitio/synit-waf:1.0.0@sha256:<digest>
-    image: synitio/synit-waf:1.0.0
+    image: synitio/synit-waf:1.0.1
     ports:
       - "80:80"
       - "443:443"

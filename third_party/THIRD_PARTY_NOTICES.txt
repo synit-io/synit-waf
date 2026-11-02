@@ -6143,7 +6143,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/compute-onnx v0.1.13
+github.com/gomlx/compute-onnx v0.1.15
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -6351,7 +6351,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/compute v0.1.14
+github.com/gomlx/compute v0.1.16
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -6767,7 +6767,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/go-huggingface v0.4.15
+github.com/gomlx/go-huggingface v0.4.17
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -6975,7 +6975,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/gomlx v0.28.17
+github.com/gomlx/gomlx v0.28.19
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -7183,7 +7183,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/onnx-gomlx v0.5.14
+github.com/gomlx/onnx-gomlx v0.5.16
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -7954,7 +7954,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/knights-analytics/hugot v0.8.3
+github.com/knights-analytics/hugot v0.8.4
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---

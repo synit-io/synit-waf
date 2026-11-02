@@ -37,7 +37,7 @@
       ]
     }
   ],
-  "notice_sha256": "c2f0953ed6a2dfd97878b31dd7962737051707f348a0601de36b44750b23f4a0",
+  "notice_sha256": "d4ca725d0374483a0f5ab6b488f4653e24f7c3dd867b3b2f5c730d28d614d6bf",
   "dependencies": [
     {
       "path": "go.dev/toolchain",
@@ -679,7 +679,7 @@
     },
     {
       "path": "github.com/gomlx/compute-onnx",
-      "version": "v0.1.13",
+      "version": "v0.1.15",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -693,7 +693,7 @@
     },
     {
       "path": "github.com/gomlx/compute",
-      "version": "v0.1.14",
+      "version": "v0.1.16",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -721,7 +721,7 @@
     },
     {
       "path": "github.com/gomlx/go-huggingface",
-      "version": "v0.4.15",
+      "version": "v0.4.17",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -735,7 +735,7 @@
     },
     {
       "path": "github.com/gomlx/gomlx",
-      "version": "v0.28.17",
+      "version": "v0.28.19",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -749,7 +749,7 @@
     },
     {
       "path": "github.com/gomlx/onnx-gomlx",
-      "version": "v0.5.14",
+      "version": "v0.5.16",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -866,7 +866,7 @@
     },
     {
       "path": "github.com/knights-analytics/hugot",
-      "version": "v0.8.3",
+      "version": "v0.8.4",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"

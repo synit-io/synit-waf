@@ -5,7 +5,7 @@ COPY . .
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-w -s" -o ai-logs-receiver .
 RUN mkdir -p /staging/data/ai-logs && chown -R 65532:65532 /staging/data
 
-FROM gcr.io/distroless/static-debian13@sha256:15f8637509792e05b97d83451b0b6ccfa4abd548f997e406ac1e72c87fe1fa78
+FROM gcr.io/distroless/static-debian13@sha256:448810357cc8e67b7208988abdba0f5ec3d3aebee0a5b13eb624979792cffc0f
 WORKDIR /app
 COPY --from=builder /app/ai-logs-receiver /usr/local/bin/ai-logs-receiver
 COPY --from=builder --chown=65532:65532 /staging/data /data

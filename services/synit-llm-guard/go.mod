@@ -2,7 +2,7 @@ module github.com/synit-io/synit-waf/services/synit-llm-guard
 
 go 1.27.3
 
-require github.com/knights-analytics/hugot v0.8.4
+require github.com/knights-analytics/hugot v0.8.5
 
 require (
 	github.com/eliben/go-sentencepiece v0.7.0 // indirect
@@ -17,7 +17,7 @@ require (
 	github.com/gomlx/onnx-gomlx v0.5.16 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/knights-analytics/ortgenai v0.3.4 // indirect
-	github.com/microsoft/onnxruntime/go v0.0.0-20261029142256-a371cbde5d83 // indirect
+	github.com/microsoft/onnxruntime/go v0.0.0-20261030073735-b5fe413d0b05 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	golang.org/x/exp v0.0.0-20261014143641-f0251eb4aa3e // indirect
 	golang.org/x/image v0.47.0 // indirect

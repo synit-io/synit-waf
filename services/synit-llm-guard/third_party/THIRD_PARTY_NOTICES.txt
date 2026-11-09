@@ -7954,7 +7954,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/knights-analytics/hugot v0.8.4
+github.com/knights-analytics/hugot v0.8.5
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---

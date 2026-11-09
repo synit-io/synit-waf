@@ -37,7 +37,7 @@
       ]
     }
   ],
-  "notice_sha256": "d4ca725d0374483a0f5ab6b488f4653e24f7c3dd867b3b2f5c730d28d614d6bf",
+  "notice_sha256": "d48e86628e948dc6c8e65d0b78eb78a1730918d02b0e0fb3241da27326af3fc7",
   "dependencies": [
     {
       "path": "go.dev/toolchain",
@@ -866,7 +866,7 @@
     },
     {
       "path": "github.com/knights-analytics/hugot",
-      "version": "v0.8.4",
+      "version": "v0.8.5",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"

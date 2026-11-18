@@ -6078,7 +6078,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/gofrs/flock v0.13.1
+github.com/gofrs/flock v0.13.2
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: f4c7b0fbdba9660126feab6388ceed10ff744b2c772a63132f64f9ab2ee5fa29) ---
@@ -6143,7 +6143,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/compute-onnx v0.1.15
+github.com/gomlx/compute-onnx v0.1.28
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -6351,7 +6351,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/compute v0.1.16
+github.com/gomlx/compute v0.1.28
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -6767,7 +6767,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/go-huggingface v0.4.17
+github.com/gomlx/go-huggingface v0.4.32
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -6975,7 +6975,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/gomlx v0.28.19
+github.com/gomlx/gomlx v0.28.34
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -7183,7 +7183,7 @@ Used by: synit-llm-guard
    limitations under the License.
 
 --------------------------------------------------------------------------------
-github.com/gomlx/onnx-gomlx v0.5.16
+github.com/gomlx/onnx-gomlx v0.5.31
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -7954,7 +7954,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/knights-analytics/hugot v0.8.5
+github.com/knights-analytics/hugot v0.8.6
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4) ---
@@ -9819,7 +9819,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/tidwall/gjson v1.20.0
+github.com/tidwall/gjson v1.20.2
 Used by: synit-waf
 
 --- LICENSE (SHA-256: be83ad53208d03a9fe08c7fac231cabf79422989ef5706bff217bd35104ebf07) ---
@@ -9873,7 +9873,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-github.com/tidwall/pretty v1.2.2
+github.com/tidwall/pretty v1.3.0
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 0ca70311227fe097c662dece3f359e3317fa7f9d41f8d29eb45fc5135e216139) ---
@@ -10486,7 +10486,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 --------------------------------------------------------------------------------
-golang.org/x/crypto v0.58.0
+golang.org/x/crypto v0.59.0
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
@@ -10545,7 +10545,7 @@ rights granted to you under this License for this implementation of Go
 shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
-golang.org/x/exp v0.0.0-20261014143641-f0251eb4aa3e
+golang.org/x/exp v0.0.0-20261109185158-a52e3aef5920
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
@@ -10604,7 +10604,7 @@ rights granted to you under this License for this implementation of Go
 shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
-golang.org/x/image v0.47.0
+golang.org/x/image v0.48.0
 Used by: synit-llm-guard
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
@@ -10663,7 +10663,7 @@ rights granted to you under this License for this implementation of Go
 shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
-golang.org/x/net v0.61.0
+golang.org/x/net v0.62.0
 Used by: synit-waf
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
@@ -10722,7 +10722,7 @@ rights granted to you under this License for this implementation of Go
 shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
-golang.org/x/sync v0.24.0
+golang.org/x/sync v0.25.0
 Used by: synit-llm-guard, synit-waf
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
@@ -10781,7 +10781,7 @@ rights granted to you under this License for this implementation of Go
 shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
-golang.org/x/sys v0.49.0
+golang.org/x/sys v0.50.0
 Used by: synit-llm-guard, synit-waf
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---
@@ -10840,7 +10840,7 @@ rights granted to you under this License for this implementation of Go
 shall terminate as of the date such litigation is filed.
 
 --------------------------------------------------------------------------------
-golang.org/x/text v0.43.0
+golang.org/x/text v0.44.0
 Used by: synit-llm-guard, synit-waf
 
 --- LICENSE (SHA-256: 911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad) ---

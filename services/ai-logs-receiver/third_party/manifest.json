@@ -37,7 +37,7 @@
       ]
     }
   ],
-  "notice_sha256": "d48e86628e948dc6c8e65d0b78eb78a1730918d02b0e0fb3241da27326af3fc7",
+  "notice_sha256": "059fe393789ae8dbfad92a55ee19cdcae6c4e4f59db241e193be0d1f8443e14e",
   "dependencies": [
     {
       "path": "go.dev/toolchain",
@@ -637,7 +637,7 @@
     },
     {
       "path": "github.com/gofrs/flock",
-      "version": "v0.13.1",
+      "version": "v0.13.2",
       "license": "BSD-3-Clause",
       "used_by": [
         "synit-llm-guard"
@@ -679,7 +679,7 @@
     },
     {
       "path": "github.com/gomlx/compute-onnx",
-      "version": "v0.1.15",
+      "version": "v0.1.28",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -693,7 +693,7 @@
     },
     {
       "path": "github.com/gomlx/compute",
-      "version": "v0.1.16",
+      "version": "v0.1.28",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -721,7 +721,7 @@
     },
     {
       "path": "github.com/gomlx/go-huggingface",
-      "version": "v0.4.17",
+      "version": "v0.4.32",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -735,7 +735,7 @@
     },
     {
       "path": "github.com/gomlx/gomlx",
-      "version": "v0.28.19",
+      "version": "v0.28.34",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -749,7 +749,7 @@
     },
     {
       "path": "github.com/gomlx/onnx-gomlx",
-      "version": "v0.5.16",
+      "version": "v0.5.31",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -866,7 +866,7 @@
     },
     {
       "path": "github.com/knights-analytics/hugot",
-      "version": "v0.8.5",
+      "version": "v0.8.6",
       "license": "Apache-2.0",
       "used_by": [
         "synit-llm-guard"
@@ -1136,7 +1136,7 @@
     },
     {
       "path": "github.com/tidwall/gjson",
-      "version": "v1.20.0",
+      "version": "v1.20.2",
       "license": "MIT",
       "used_by": [
         "synit-waf"
@@ -1164,7 +1164,7 @@
     },
     {
       "path": "github.com/tidwall/pretty",
-      "version": "v1.2.2",
+      "version": "v1.3.0",
       "license": "MIT",
       "used_by": [
         "synit-waf"
@@ -1308,7 +1308,7 @@
     },
     {
       "path": "golang.org/x/crypto",
-      "version": "v0.58.0",
+      "version": "v0.59.0",
       "license": "BSD-3-Clause",
       "used_by": [
         "synit-waf"
@@ -1326,7 +1326,7 @@
     },
     {
       "path": "golang.org/x/exp",
-      "version": "v0.0.0-20261014143641-f0251eb4aa3e",
+      "version": "v0.0.0-20261109185158-a52e3aef5920",
       "license": "BSD-3-Clause",
       "used_by": [
         "synit-llm-guard"
@@ -1344,7 +1344,7 @@
     },
     {
       "path": "golang.org/x/image",
-      "version": "v0.47.0",
+      "version": "v0.48.0",
       "license": "BSD-3-Clause",
       "used_by": [
         "synit-llm-guard"
@@ -1362,7 +1362,7 @@
     },
     {
       "path": "golang.org/x/net",
-      "version": "v0.61.0",
+      "version": "v0.62.0",
       "license": "BSD-3-Clause",
       "used_by": [
         "synit-waf"
@@ -1380,7 +1380,7 @@
     },
     {
       "path": "golang.org/x/sync",
-      "version": "v0.24.0",
+      "version": "v0.25.0",
       "license": "BSD-3-Clause",
       "used_by": [
         "synit-llm-guard",
@@ -1399,7 +1399,7 @@
     },
     {
       "path": "golang.org/x/sys",
-      "version": "v0.49.0",
+      "version": "v0.50.0",
       "license": "BSD-3-Clause",
       "used_by": [
         "synit-llm-guard",
@@ -1418,7 +1418,7 @@
     },
     {
       "path": "golang.org/x/text",
-      "version": "v0.43.0",
+      "version": "v0.44.0",
       "license": "BSD-3-Clause",
       "used_by": [
         "synit-llm-guard",

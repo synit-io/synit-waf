@@ -37,7 +37,7 @@
       ]
     }
   ],
-  "notice_sha256": "059fe393789ae8dbfad92a55ee19cdcae6c4e4f59db241e193be0d1f8443e14e",
+  "notice_sha256": "224a28d88002585ee4d86942446e1a09ddf0deac3ba3ab1f522787cdba67b019",
   "dependencies": [
     {
       "path": "go.dev/toolchain",
@@ -1136,7 +1136,7 @@
     },
     {
       "path": "github.com/tidwall/gjson",
-      "version": "v1.20.2",
+      "version": "v1.20.5",
       "license": "MIT",
       "used_by": [
         "synit-waf"

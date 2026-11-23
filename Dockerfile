@@ -4,7 +4,7 @@
 # third_party/, LICENSE, and NOTICE; .dockerignore excludes the rest.
 
 # Stage 1: build a static binary (no cgo, so no C toolchain is needed).
-FROM golang:1.27.4-alpine@sha256:0a5f7fe796599ff487605987432e7619ae45beeb2fba4c2ce0b907879932aebf AS builder
+FROM golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 AS builder
 
 WORKDIR /src
 

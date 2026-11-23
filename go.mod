@@ -15,7 +15,7 @@ require (
 	github.com/prometheus/client_golang v1.25.0
 	github.com/prometheus/client_model v0.6.3
 	github.com/sirupsen/logrus v1.10.2
-	github.com/tidwall/gjson v1.20.2
+	github.com/tidwall/gjson v1.20.5
 	golang.org/x/crypto v0.59.0
 	golang.org/x/time v0.16.0
 	gopkg.in/yaml.v3 v3.0.1
